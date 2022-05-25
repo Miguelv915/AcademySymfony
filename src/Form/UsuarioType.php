@@ -8,6 +8,7 @@
 namespace Pidia\Apps\Demo\Form;
 
 use CarlosChininin\App\Infrastructure\Security\Security;
+use CarlosChininin\FileUpload\Form\ImageFileUploadFormType;
 use Doctrine\ORM\EntityRepository;
 use Pidia\Apps\Demo\Entity\Config;
 use Pidia\Apps\Demo\Entity\Usuario;
@@ -56,6 +57,9 @@ class UsuarioType extends AbstractType
 
                     return $queryBuilder;
                 },
+            ])
+            ->add('foto', ImageFileUploadFormType::class, [
+                'required' => false,
             ])
         ;
 

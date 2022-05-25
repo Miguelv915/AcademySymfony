@@ -23,6 +23,12 @@
             {% endfor %}
         </td>
     </tr>
+    <tr>
+        <th>Foto</th>
+        <td>
+            <img src="{{ usuario.foto|file_upload_webpath|default(asset('img/no-image.png')) }}" alt="foto" height="100" />
+        </td>
+    </tr>
     {% include 'crud/_show_info.html.twig' with {'entity': usuario} %}
     {{ action.tbl_end() }}
 

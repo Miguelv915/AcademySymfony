@@ -21,10 +21,7 @@
 
     {{ action.frm_column(
         action.frm_column_field_select(form.usuarioRoles),
-        null,
-        null,
-        null,
-        2
+        action.frm_column_field(form.foto)
     ) }}
 
     {% if access.isSuperAdmin -%}

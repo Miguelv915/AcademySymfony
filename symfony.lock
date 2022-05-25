@@ -5,6 +5,9 @@
     "carloschininin/data": {
         "version": "dev-master"
     },
+    "carloschininin/file-upload-bundle": {
+        "version": "dev-main"
+    },
     "carloschininin/util": {
         "version": "dev-master"
     },

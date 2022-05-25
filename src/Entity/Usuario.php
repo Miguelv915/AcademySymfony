@@ -8,6 +8,7 @@
 namespace Pidia\Apps\Demo\Entity;
 
 use CarlosChininin\App\Domain\Model\AuthUser\AuthUser;
+use CarlosChininin\FileUpload\Model\FileUpload;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -16,6 +17,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\OneToOne;
 use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
 use Pidia\Apps\Demo\Repository\UsuarioRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -55,6 +57,9 @@ class Usuario extends AuthUser
 
     #[Column(type: 'string', length: 100, nullable: true)]
     private ?string $fullName = null;
+
+    #[OneToOne(targetEntity: FileUpload::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ?FileUpload $foto = null;
 
     private ?string $passwordActual;
     private ?string $passwordNuevo;
@@ -220,5 +225,17 @@ class Usuario extends AuthUser
     public function authRoles(): Collection|array
     {
         return $this->getUsuarioRoles();
+    }
+
+    public function getFoto(): ?FileUpload
+    {
+        return $this->foto;
+    }
+
+    public function setFoto(?FileUpload $foto): self
+    {
+        $this->foto = $foto;
+
+        return $this;
     }
 }
