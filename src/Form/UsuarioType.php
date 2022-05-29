@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class UsuarioType extends AbstractType
 {
@@ -60,6 +61,18 @@ class UsuarioType extends AbstractType
             ])
             ->add('foto', ImageFileUploadFormType::class, [
                 'required' => false,
+                'folder' => '/usuarios',
+                'validators' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'maxSizeMessage' => 'El archivo es demasiado grande. El tamaño máximo permitido es de 1024Kb',
+                        'mimeTypesMessage' => 'Subir imagen en formato png o jpg',
+                    ]),
+                ],
             ])
         ;
 
