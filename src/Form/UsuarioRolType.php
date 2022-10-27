@@ -7,14 +7,13 @@
 
 namespace Pidia\Apps\Demo\Form;
 
+use CarlosChininin\App\Infrastructure\Form\CollectionFormType;
 use CarlosChininin\App\Infrastructure\Security\Form\MenuPermissionType;
 use Doctrine\ORM\EntityRepository;
 use Pidia\Apps\Demo\Entity\Config;
 use Pidia\Apps\Demo\Entity\UsuarioRol;
-use SisproBanano\Shared\Infrastructure\Form\CollectionFormType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

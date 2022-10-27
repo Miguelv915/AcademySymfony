@@ -16,7 +16,6 @@ use Pidia\Apps\Demo\Entity\Usuario;
 use Pidia\Apps\Demo\Form\UsuarioType;
 use Pidia\Apps\Demo\Manager\UsuarioManager;
 use Pidia\Apps\Demo\Security\PasswordSecurity;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
