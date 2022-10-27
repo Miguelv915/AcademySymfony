@@ -4,7 +4,8 @@ twig:
         app_version: '1.0.0'
         default_results_per_page: '%default_results_per_page%'
     form_themes:
-        - '@FileUpload/fields.html.twig'
+        - 'theme/bootstrap_horizontal.html.twig'
+
 when@test:
     twig:
         strict_variables: true

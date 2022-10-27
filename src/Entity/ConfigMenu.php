@@ -28,11 +28,11 @@ class ConfigMenu
     private ?string $route;
 
     #[Column(type: 'boolean')]
-    private bool $activo;
+    private bool $isActive;
 
     public function __construct()
     {
-        $this->activo = true;
+        $this->isActive = true;
     }
 
     public function getId(): ?int
@@ -64,21 +64,19 @@ class ConfigMenu
         return $this;
     }
 
-    public function getActivo(): bool
+    public function isActive(): bool
     {
-        return $this->activo;
+        return $this->isActive;
     }
 
-    public function setActivo(bool $activo): self
+    public function setIsActive(bool $isActive): void
     {
-        $this->activo = $activo;
-
-        return $this;
+        $this->isActive = $isActive;
     }
 
-    public function changeActivo(): void
+    public function changeActive(): void
     {
-        $this->activo = !$this->getActivo();
+        $this->isActive = !$this->isActive();
     }
 
     public function __toString(): string

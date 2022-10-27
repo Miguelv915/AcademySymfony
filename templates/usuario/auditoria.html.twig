@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
-{% import 'macro/action.html.twig' as action %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import 'theme/action.html.twig' as action %}
 {% import 'macro/pagination.html.twig' as pagination %}
 
 {% set _title = 'Usuario Auditoria' %}
@@ -353,10 +353,10 @@
 {#    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'usuario'}  %}#}
 {% endblock %}
 
-{% block _stylesheets %}
+{% block stylesheets %}
 {% endblock %}
 
-{% block _javascripts %}
+{% block javascripts %}
     <script>
         jQuery(document).ready(function () {
             $(document).on('change', '#filter_size', function () {

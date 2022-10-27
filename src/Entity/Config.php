@@ -37,9 +37,6 @@ class Config
     #[Column(type: 'string', length: 255)]
     private ?string $nombre;
 
-    #[Column(type: 'string', length: 30)]
-    private ?string $nombreCorto;
-
     #[ManyToMany(targetEntity: ConfigMenu::class)]
     #[JoinTable(name: 'config_config_menu_menus')]
     private Collection $menus;
@@ -61,7 +58,7 @@ class Config
 
     public function setAlias(string $alias): self
     {
-        $this->alias = $alias; //mb_strtolower(Generator::withoutWhiteSpaces($alias));
+        $this->alias = $alias; // mb_strtolower(Generator::withoutWhiteSpaces($alias));
 
         return $this;
     }
@@ -78,21 +75,9 @@ class Config
         return $this;
     }
 
-    public function getNombreCorto(): ?string
-    {
-        return $this->nombreCorto;
-    }
-
-    public function setNombreCorto(string $nombreCorto): self
-    {
-        $this->nombreCorto = $nombreCorto;
-
-        return $this;
-    }
-
     public function __toString(): string
     {
-        return $this->getNombreCorto();
+        return $this->getAlias();
     }
 
     /**

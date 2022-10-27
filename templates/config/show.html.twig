@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
-{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
-{% import 'macro/action.html.twig' as action %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
+{% import 'theme/action.html.twig' as action %}
 
 {% set _title = 'Configuración' %}
 {% set _main_title = 'Mostrar' %}
@@ -11,12 +12,11 @@
 {% endblock %}
 
 {% block _main %}
-    {{ action.tbl_start() }}
-    {{ action.tbl_tr('Nombre',config.nombre) }}
-    {{ action.tbl_tr('Nombre Corto',config.nombreCorto) }}
-    {{ action.tbl_tr('Alias',config.alias) }}
+    {{ table.tbl_start() }}
+    {{ table.tbl_tr('Nombre',config.nombre) }}
+    {{ table.tbl_tr('Alias',config.alias) }}
     {% include 'crud/_show_info.html.twig' with {'entity': config} %}
-    {{ action.tbl_end() }}
+    {{ table.tbl_end() }}
 
 {% endblock %}
 

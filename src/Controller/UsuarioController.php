@@ -16,6 +16,7 @@ use Pidia\Apps\Demo\Entity\Usuario;
 use Pidia\Apps\Demo\Form\UsuarioType;
 use Pidia\Apps\Demo\Manager\UsuarioManager;
 use Pidia\Apps\Demo\Security\PasswordSecurity;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,33 +46,16 @@ final class UsuarioController extends WebAuthController
         $this->denyAccess([Permission::EXPORT]);
 
         $headers = [
-            'usuario' => 'Usuario',
-            'nombres' => 'Nombres',
-            'correo' => 'Correo',
-            'roles' => 'Roles',
-            'activo' => 'Activo',
+            'username' => 'Usuario',
+            'fullName' => 'Nombres',
+            'email' => 'Correo',
+            'usuarioRoles.name' => 'Roles',
+            'isActive' => 'Activo',
         ];
 
-        $objetos = $manager->dataExport(ParamFetcher::fromRequestQuery($request));
-        $data = [];
-        /** @var Usuario $objeto */
-        foreach ($objetos as $objeto) {
-            $item = [];
-            $item['usuario'] = $objeto->getUsername();
-            $item['nombres'] = $objeto->getFullName();
-            $item['correo'] = $objeto->getEmail();
+        $usuarios = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
 
-            $item['roles'] = '';
-            foreach ($objeto->getUsuarioRoles() as $usuarioRol) {
-                $item['roles'] = $usuarioRol->getNombre().', '.$item['roles'];
-            }
-
-            $item['activo'] = $objeto->activo();
-            $data[] = $item;
-            unset($item);
-        }
-
-        return $manager->export($data, $headers, 'usuario');
+        return $manager->export($usuarios, $headers, 'usuario');
     }
 
     #[Route(path: '/new', name: 'usuario_new', methods: 'GET|POST')]
@@ -83,7 +67,7 @@ final class UsuarioController extends WebAuthController
         $form = $this->createForm(UsuarioType::class, $usuario);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $usuario->setPropietario($this->getUser());
+            $usuario->setOwner($this->getUser());
             try {
                 $usuario->setPassword($authPassword->encrypt($usuario, $usuario->getPassword()));
                 $entityManager->persist($usuario);
@@ -112,8 +96,12 @@ final class UsuarioController extends WebAuthController
     }
 
     #[Route(path: '/{id}/edit', name: 'usuario_edit', methods: 'GET|POST')]
-    public function edit(Request $request, Usuario $usuario, PasswordSecurity $authPassword, EntityManagerInterface $entityManager): Response
-    {
+    public function edit(
+        Request $request,
+        Usuario $usuario,
+        PasswordSecurity $authPassword,
+        EntityManagerInterface $entityManager,
+    ): Response {
         $this->denyAccess([Permission::EDIT], $usuario);
 
         $passwordOriginal = $usuario->getPassword();
@@ -137,13 +125,13 @@ final class UsuarioController extends WebAuthController
         ]);
     }
 
-    #[Route(path: '/{id}', name: 'usuario_delete', methods: 'DELETE')]
-    public function delete(Request $request, Usuario $usuario, UsuarioManager $manager): Response
+    #[Route(path: '/{id}/state', name: 'usuario_change_state', methods: 'POST')]
+    public function state(Request $request, Usuario $usuario, UsuarioManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $usuario);
 
-        if ($this->isCsrfTokenValid('delete'.$usuario->getId(), $request->request->get('_token'))) {
-            $usuario->changeActivo();
+        if ($this->isCsrfTokenValid('change_state'.$usuario->getId(), $request->request->get('_token'))) {
+            $usuario->changeActive();
             if ($manager->save($usuario)) {
                 $this->addFlash('warning', 'Registro actualizado');
             } else {
@@ -154,7 +142,7 @@ final class UsuarioController extends WebAuthController
         return $this->redirectToRoute('usuario_index');
     }
 
-    #[Route(path: '/{id}/delete', name: 'usuario_delete_forever', methods: ['POST'])]
+    #[Route(path: '/{id}/delete', name: 'usuario_delete', methods: ['POST'])]
     public function deleteForever(Request $request, Usuario $usuario, UsuarioManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $usuario);

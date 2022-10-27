@@ -7,8 +7,8 @@
 
 namespace Pidia\Apps\Demo\Entity;
 
+use CarlosChininin\App\Domain\Model\AttachedFile\AttachedFile;
 use CarlosChininin\App\Domain\Model\AuthUser\AuthUser;
-use CarlosChininin\FileUpload\Model\FileUpload;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -52,14 +52,14 @@ class Usuario extends AuthUser
     #[Column(type: 'string', length: 100)]
     private ?string $password;
 
-    #[ManyToMany(targetEntity: UsuarioRol::class, inversedBy: 'usuarios')]
+    #[ManyToMany(targetEntity: UsuarioRol::class, inversedBy: 'users')]
     private Collection $usuarioRoles;
 
     #[Column(type: 'string', length: 100, nullable: true)]
     private ?string $fullName = null;
 
-    #[OneToOne(targetEntity: FileUpload::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private ?FileUpload $foto = null;
+    #[OneToOne(targetEntity: AttachedFile::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ?AttachedFile $photo = null;
 
     private ?string $passwordActual;
     private ?string $passwordNuevo;
@@ -163,6 +163,7 @@ class Usuario extends AuthUser
         return $this;
     }
 
+    /** @return UsuarioRol[]|Collection */
     public function getUsuarioRoles(): ?Collection
     {
         return $this->usuarioRoles;
@@ -227,15 +228,13 @@ class Usuario extends AuthUser
         return $this->getUsuarioRoles();
     }
 
-    public function getFoto(): ?FileUpload
+    public function photo(): ?AttachedFile
     {
-        return $this->foto;
+        return $this->photo;
     }
 
-    public function setFoto(?FileUpload $foto): self
+    public function setPhoto(?AttachedFile $photo): void
     {
-        $this->foto = $foto;
-
-        return $this;
+        $this->photo = $photo;
     }
 }

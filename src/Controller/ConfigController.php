@@ -44,8 +44,8 @@ final class ConfigController extends WebAuthController
         $headers = [
             'nombre' => 'Nombre',
             'alias' => 'Alias',
-            'descripcion' => 'Descripcion',
-            'activo' => 'Activo',
+            'menus.name' => 'Menu',
+            'isActive' => 'Activo',
         ];
 
         $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
@@ -113,13 +113,13 @@ final class ConfigController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'config_delete', methods: ['POST'])]
-    public function delete(Request $request, Config $config, ConfigManager $manager): Response
+    #[Route(path: '/{id}/state', name: 'config_change_state', methods: ['POST'])]
+    public function state(Request $request, Config $config, ConfigManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $config);
 
         if ($this->isCsrfTokenValid('delete'.$config->getId(), $request->request->get('_token'))) {
-            $config->changeActivo();
+            $config->changeActive();
             if ($manager->save($config)) {
                 $this->addFlash('success', 'Estado ha sido actualizado');
             } else {
@@ -130,8 +130,8 @@ final class ConfigController extends WebAuthController
         return $this->redirectToRoute('config_index');
     }
 
-    #[Route(path: '/{id}/delete', name: 'config_delete_forever', methods: ['POST'])]
-    public function deleteForever(Request $request, Config $config, ConfigManager $manager): Response
+    #[Route(path: '/{id}/delete', name: 'config_delete', methods: ['POST'])]
+    public function delete(Request $request, Config $config, ConfigManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $config);
 

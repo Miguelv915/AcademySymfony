@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+
+{% set _title = 'Productor' %}
+{% set _main_title = 'Nuevo' %}
+{% set _section =  'productor_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title,_section,'Nuevo') }}
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block _productor_parcelas_entry_label %}
+{% endblock %}
+
+{% block _productor_parcelas_entry_widget %}
+    {% import 'theme/form.html.twig' as frm %}
+    {{ frm.column2(
+        form_row(form.codigo),
+        form_row(form.nombre)
+    ) }}
+    {{ frm.column2(
+        form_row(form.sector),
+        form_row(form.areaBanano)
+    ) }}
+{% endblock %}
+
+{% block _main %}
+    {{ include('productor/_form.html.twig') }}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_new_links_ico.html.twig' with {'route_base':'productor'} %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_new_links.html.twig' with {'route_base':'productor'} %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/select2.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/collection.js') }}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+            Select2();
+            Collection.init('#productor_parcelas');
+        });
+    </script>
+{% endblock %}

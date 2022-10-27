@@ -48,7 +48,7 @@ class UsuarioRolController extends WebAuthController
         $headers = [
             'nombre' => 'Nombre',
             'rol' => 'Alias',
-            'activo' => 'Activo',
+            'isActive' => 'Activo',
         ];
 
         $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
@@ -119,13 +119,13 @@ class UsuarioRolController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'usuario_rol_delete', methods: ['POST'])]
+    #[Route(path: '/{id}/state', name: 'usuario_rol_change_state', methods: ['POST'])]
     public function state(Request $request, UsuarioRol $rol, UsuarioRolManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $rol);
 
-        if ($this->isCsrfTokenValid('delete'.$rol->getId(), $request->request->get('_token'))) {
-            $rol->changeActivo();
+        if ($this->isCsrfTokenValid('change_state'.$rol->getId(), $request->request->get('_token'))) {
+            $rol->changeActive();
             if ($manager->save($rol)) {
                 $this->addFlash('success', 'Estado ha sido actualizado');
             } else {
@@ -136,8 +136,8 @@ class UsuarioRolController extends WebAuthController
         return $this->redirectToRoute('usuario_rol_index');
     }
 
-    #[Route(path: '/{id}/delete', name: 'usuario_rol_delete_forever', methods: ['POST'])]
-    public function deleteForever(Request $request, UsuarioRol $rol, UsuarioRolManager $manager): Response
+    #[Route(path: '/{id}/delete', name: 'usuario_rol_delete', methods: ['POST'])]
+    public function delete(Request $request, UsuarioRol $rol, UsuarioRolManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $rol);
 

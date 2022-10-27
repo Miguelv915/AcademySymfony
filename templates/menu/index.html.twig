@@ -12,44 +12,56 @@
 
 {% block _main %}
     {{ pagination.pager(paginator, _section) }}
-    {% embed 'macro/_table.html.twig' %}
+    {% embed 'theme/_table.html.twig' %}
         {% block table_head %}
-            {% import 'macro/action.html.twig' as action %}
+            {% import 'theme/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
 
             <tr>
                 {{ table.th('#') }}
-                {{ table.th('Padre', true) }}
-                {{ table.th('Nombre', true) }}
-                {{ table.th('Ruta', true) }}
-                {{ table.th('Icono', true) }}
-                {{ table.th('Insignia', true) }}
-                {{ table.th('Orden', true) }}
-                {{ table.th('Activo', true, 'text-center') }}
+                {{ table.th('Datos', true, 'd-block d-sm-none') }}
+                {{ table.th('Padre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Ruta', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Icono', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Insignia', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Orden', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }}
                 <th></th>
             </tr>
         {% endblock %}
         {% block table_body %}
-            {% import 'macro/action.html.twig' as action %}
+            {% import 'theme/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
 
             {% for menu in paginator.results %}
                 <tr>
-                    <td>{{ loop.index | index (paginator)}}</td>
-                    <td>{{ menu.parent}}</td>
-                    <td>{{ menu.name }}</td>
-                    <td>{{ menu.route }}</td>
-                    <td><i class="{{ menu.icon }}"></i> {{ menu.icon }}</td>
-                    <td>{{ menu.badge }}</td>
-                    <td class="text-center">{{ menu.ranking }}</td>
-                    <td class="text-center">{{ menu.activo | yesno_custom | raw }}</td>
-                    <td class="float-end">
-                        {% if access.has('show', menu) %}
-                            {{ action.btn_show_link2_ico(path('menu_show', {'id': menu.id})) }}
-                        {% endif %}
-                        {% if access.has('edit', menu) %}
-                            {{ action.btn_edit_link2_ico(path('menu_edit', {'id': menu.id})) }}
-                        {% endif %}
+                    <td class="text-center">{{ loop.index | index (paginator)}}</td>
+                    <td class="d-block d-sm-none">
+                        <table class="table gs-0 gy-0">
+                            {{ table.tbl_tr_th_td('Padre', menu.parent) }}
+                            {{ table.tbl_tr_th_td('Nombre', menu.name) }}
+                            {{ table.tbl_tr_th_td('Ruta', menu.route) }}
+                            {{ table.tbl_tr_th_td('Icono', menu.icon, false) }}
+                            {{ table.tbl_tr_th_td('Activo', menu.isActive  | yesno_custom) }}
+                        </table>
+                    </td>
+                    <td class="d-none d-sm-table-cell">{{ menu.parent}}</td>
+                    <td class="d-none d-sm-table-cell">{{ menu.name }}</td>
+                    <td class="d-none d-sm-table-cell">{{ menu.route }}</td>
+                    <td class="d-none d-sm-table-cell"><i class="{{ menu.icon }}"></i> {{ menu.icon }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ menu.badge }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ menu.ranking }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ menu.isActive | yesno_custom | raw }}</td>
+                    <td class="">
+                        <div class="float-end">
+                            {% if access.has('show', menu) %}
+                                {{ action.btn_show_link2_ico(path('menu_show', {'id': menu.id})) }}
+                            {% endif %}
+                            {% if access.has('edit', menu) %}
+                                {{ action.btn_edit_link2_ico(path('menu_edit', {'id': menu.id})) }}
+                            {% endif %}
+                        </div>
                     </td>
                 </tr>
             {% else %}
@@ -71,10 +83,10 @@
     {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'menu'}  %}
 {% endblock %}
 
-{% block _stylesheets %}
+{% block stylesheets %}
 {% endblock %}
 
-{% block _javascripts %}
+{% block javascripts %}
     <script src="{{ asset('js/crud/list.js') }}"></script>
     <script>
         $(document).ready(function () {

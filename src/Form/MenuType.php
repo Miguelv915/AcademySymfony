@@ -35,8 +35,7 @@ class MenuType extends AbstractType
             ])
             ->add('icon')
             ->add('ranking')
-            ->add('badge')
-        ;
+            ->add('badge');
     }
 
     public function configureOptions(OptionsResolver $resolver)

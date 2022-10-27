@@ -42,8 +42,7 @@ class ConfigMenuRepository extends BaseRepository
     {
         $queryBuilder = $this->createQueryBuilder('configMenu')
             ->select('configMenu')
-            ->orderBy('configMenu.name', 'ASC')
-        ;
+            ->orderBy('configMenu.name', 'ASC');
 
         DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['configMenu.name']);
 
@@ -53,7 +52,6 @@ class ConfigMenuRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('configMenu')
-            ->select('configMenu')
-        ;
+            ->select('configMenu');
     }
 }

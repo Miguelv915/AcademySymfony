@@ -13,26 +13,18 @@
     {{ include('menu/_form.html.twig') }}
 {% endblock %}
 
-{% block _main_tools %}
-    {% include 'crud/_tools_ico.html.twig' %}
-{% endblock %}
-
 {% block _body_tools %}
     {% include 'crud/_new_links_ico.html.twig' with {'route_base':'menu'} %}
-{% endblock %}
-
-{% block _body_tools_ico %}
-    {% include 'crud/_new_links_tool.html.twig' with {'route_base': 'menu'}  %}
 {% endblock %}
 
 {% block _main_footer %}
     {% include 'crud/_new_links.html.twig' with {'route_base':'menu'} %}
 {% endblock %}
 
-{% block _stylesheets %}
+{% block stylesheets %}
 {% endblock %}
 
-{% block _javascripts %}
+{% block javascripts %}
     <script src="{{ asset('js/select2.js') }}"></script>
     <script>
         $(document).ready(function() {

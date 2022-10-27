@@ -8,12 +8,14 @@
 namespace Pidia\Apps\Demo\Controller;
 
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
+use CarlosChininin\App\Infrastructure\Security\Menu\MenuBuilder;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Pidia\Apps\Demo\Cache\MenuCache;
 use Pidia\Apps\Demo\Entity\Menu;
 use Pidia\Apps\Demo\Form\MenuType;
 use Pidia\Apps\Demo\Manager\MenuManager;
+use Pidia\Apps\Demo\Repository\MenuRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,8 +51,8 @@ class MenuController extends WebAuthController
             'name' => 'Nombre',
             'route' => 'Ruta',
             'icon' => 'Icono',
-            'rank' => 'Orden',
-            'activo' => 'Activo',
+            'ranking' => 'Orden',
+            'isActive' => 'Activo',
         ];
 
         $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
@@ -71,17 +73,17 @@ class MenuController extends WebAuthController
                 $cache->update();
                 $this->messageSuccess('Registro creado!!!');
 
-                return $this->redirectToRoute('menu_index');
+                return $this->redirectToRoute('menu_index', [], Response::HTTP_SEE_OTHER);
             }
 
             $this->addErrors($manager->errors());
         }
 
-        return $this->renderForm(
+        return $this->render(
             'menu/new.html.twig',
             [
                 'menu' => $menu,
-                'form' => $form,
+                'form' => $form->createView(),
             ]
         );
     }
@@ -109,7 +111,7 @@ class MenuController extends WebAuthController
                 $this->addErrors($manager->errors());
             }
 
-            return $this->redirectToRoute('menu_index', ['id' => $menu->getId()]);
+            return $this->redirectToRoute('menu_index', ['id' => $menu->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render(
@@ -121,13 +123,13 @@ class MenuController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'menu_delete', methods: ['POST'])]
+    #[Route(path: '/{id}/state', name: 'menu_change_state', methods: ['POST'])]
     public function state(Request $request, Menu $menu, MenuManager $manager, MenuCache $cache): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $menu);
 
-        if ($this->isCsrfTokenValid('delete'.$menu->getId(), $request->request->get('_token'))) {
-            $menu->changeActivo();
+        if ($this->isCsrfTokenValid('change_state'.$menu->getId(), $request->request->get('_token'))) {
+            $menu->changeActive();
             if ($manager->save($menu)) {
                 $cache->update();
                 $this->messageSuccess('Estado ha sido actualizado');
@@ -136,11 +138,11 @@ class MenuController extends WebAuthController
             }
         }
 
-        return $this->redirectToRoute('menu_index');
+        return $this->redirectToRoute('menu_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route(path: '/{id}/delete', name: 'menu_delete_forever', methods: ['POST'])]
-    public function deleteForever(Request $request, Menu $menu, MenuManager $manager, MenuCache $cache): Response
+    #[Route(path: '/{id}/delete', name: 'menu_delete', methods: ['POST'])]
+    public function delete(Request $request, Menu $menu, MenuManager $manager, MenuCache $cache): Response
     {
         $this->denyAccess([Permission::DELETE], $menu);
 
@@ -153,6 +155,21 @@ class MenuController extends WebAuthController
             }
         }
 
-        return $this->redirectToRoute('menu_index');
+        return $this->redirectToRoute('menu_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/menu_build', name: 'menu_build', methods: ['GET'])]
+    public function buildMenu(string $menuSelected, MenuRepository $menuRepository, MenuBuilder $menuBuilder, MenuCache $menuCache): Response
+    {
+        $content = $menuCache->menus($menuSelected, function () use ($menuRepository, $menuBuilder, $menuSelected) {
+            $menus = $menuRepository->searchAllActiveWithOrder();
+
+            return $this->renderView('@App/theme1/menu/menu.html.twig', [
+                'menus' => $menuBuilder->execute($menus, $menuSelected),
+                'menuSelected' => $menuSelected,
+            ]);
+        });
+
+        return new Response($content);
     }
 }

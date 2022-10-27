@@ -29,10 +29,10 @@
     {% include 'crud/_edit_links.html.twig' with {'route_base':'menu','entity': menu} %}
 {% endblock %}
 
-{% block _stylesheets %}
+{% block stylesheets %}
 {% endblock %}
 
-{% block _javascripts %}
+{% block javascripts %}
     <script src="{{ asset('js/select2.js') }}"></script>
     <script>
         jQuery(document).ready(function() {

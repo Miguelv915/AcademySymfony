@@ -19,21 +19,20 @@ class ParametroType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('padre', EntityType::class, [
+            ->add('parent', EntityType::class, [
                 'class' => Parametro::class,
                 'required' => false,
                 'placeholder' => 'Seleccione ...',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('parametro')
-                        //->leftJoin('estado.padre', 'padre')
-                        ->where('parametro.activo = TRUE')
+                        ->leftJoin('parametro.parent', 'parent')
+                        ->where('parametro.isActive = TRUE')
                         ->orderBy('parametro.id', 'DESC');
                 },
             ])
-            ->add('nombre')
+            ->add('name')
             ->add('alias')
-            ->add('valor')
-        ;
+            ->add('value');
     }
 
     public function configureOptions(OptionsResolver $resolver)

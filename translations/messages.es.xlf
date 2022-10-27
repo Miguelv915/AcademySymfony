@@ -56,7 +56,7 @@
             </trans-unit>
             <trans-unit id="lbl.delete.forever">
                 <source>lbl.delete.forever</source>
-                <target>Eliminar definitivamente</target>
+                <target>Eliminar</target>
             </trans-unit>
             <trans-unit id="lbl.report">
                 <source>lbl.report</source>
@@ -155,6 +155,96 @@
             <trans-unit id="error_unique">
                 <source>error_unique</source>
                 <target>Ya existe ese valor</target>
+            </trans-unit>
+
+            <trans-unit id="MASTER">
+                <source>MASTER</source>
+                <target>MAESTRO</target>
+            </trans-unit>
+            <trans-unit id="NEW">
+                <source>NEW</source>
+                <target>NUEVO</target>
+            </trans-unit>
+            <trans-unit id="LIST">
+                <source>LIST</source>
+                <target>LISTAR</target>
+            </trans-unit>
+            <trans-unit id="SHOW">
+                <source>SHOW</source>
+                <target>MOSTRAR</target>
+            </trans-unit>
+            <trans-unit id="EDIT">
+                <source>EDIT</source>
+                <target>EDITAR</target>
+            </trans-unit>
+            <trans-unit id="PRINT">
+                <source>PRINT</source>
+                <target>IMPRIMIR</target>
+            </trans-unit>
+            <trans-unit id="REPORT">
+                <source>REPORT</source>
+                <target>REPORTAR</target>
+            </trans-unit>
+            <trans-unit id="EXPORT">
+                <source>EXPORT</source>
+                <target>EXPORTAR</target>
+            </trans-unit>
+            <trans-unit id="IMPORT">
+                <source>IMPORT</source>
+                <target>IMPORTAR</target>
+            </trans-unit>
+            <trans-unit id="ENABLE">
+                <source>ENABLE</source>
+                <target>HABILITAR</target>
+            </trans-unit>
+            <trans-unit id="DISABLE">
+                <source>DISABLE</source>
+                <target>DESHABILITAR</target>
+            </trans-unit>
+            <trans-unit id="DELETE">
+                <source>DELETE</source>
+                <target>ELIMINAR</target>
+            </trans-unit>
+
+            <trans-unit id="LIST_ALL">
+                <source>LIST_ALL</source>
+                <target>LISTAR TODO</target>
+            </trans-unit>
+            <trans-unit id="SHOW_ALL">
+                <source>SHOW_ALL</source>
+                <target>MOSTRAR TODO</target>
+            </trans-unit>
+            <trans-unit id="EDIT_ALL">
+                <source>EDIT_ALL</source>
+                <target>EDITAR TODO</target>
+            </trans-unit>
+            <trans-unit id="PRINT_ALL">
+                <source>PRINT_ALL</source>
+                <target>IMPRIMIR TODO</target>
+            </trans-unit>
+            <trans-unit id="REPORT_ALL">
+                <source>REPORT_ALL</source>
+                <target>REPORTAR TODO</target>
+            </trans-unit>
+            <trans-unit id="EXPORT_ALL">
+                <source>EXPORT_ALL</source>
+                <target>EXPORTAR TODO</target>
+            </trans-unit>
+            <trans-unit id="IMPORT_ALL">
+                <source>IMPORT_ALL</source>
+                <target>IMPORTAR TODO</target>
+            </trans-unit>
+            <trans-unit id="ENABLE_ALL">
+                <source>ENABLE_ALL</source>
+                <target>HABILITAR TODO</target>
+            </trans-unit>
+            <trans-unit id="DISABLE_ALL">
+                <source>DISABLE_ALL</source>
+                <target>DESHABILITAR TODO</target>
+            </trans-unit>
+            <trans-unit id="DELETE_ALL">
+                <source>DELETE_ALL</source>
+                <target>ELIMINAR TODO</target>
             </trans-unit>
         </body>
     </file>

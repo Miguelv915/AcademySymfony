@@ -46,7 +46,7 @@ final class ConfigMenuController extends WebAuthController
         $headers = [
             'name' => 'Nombre',
             'route' => 'Ruta',
-            'activo' => 'Activo',
+            'isActive' => 'Activo',
         ];
 
         $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
@@ -115,13 +115,13 @@ final class ConfigMenuController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'config_menu_delete', methods: ['POST'])]
-    public function delete(Request $request, ConfigMenu $configMenu, ConfigMenuManager $manager): Response
+    #[Route(path: '/{id}/state', name: 'config_menu_change_state', methods: ['POST'])]
+    public function state(Request $request, ConfigMenu $configMenu, ConfigMenuManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $configMenu);
 
-        if ($this->isCsrfTokenValid('delete'.$configMenu->getId(), $request->request->get('_token'))) {
-            $configMenu->changeActivo();
+        if ($this->isCsrfTokenValid('change_state'.$configMenu->getId(), $request->request->get('_token'))) {
+            $configMenu->changeActive();
             if ($manager->save($configMenu)) {
                 $this->addFlash('success', 'Estado ha sido actualizado');
             } else {
@@ -132,8 +132,8 @@ final class ConfigMenuController extends WebAuthController
         return $this->redirectToRoute('config_menu_index');
     }
 
-    #[Route(path: '/{id}/delete', name: 'config_menu_delete_forever', methods: ['POST'])]
-    public function deleteForever(Request $request, ConfigMenu $configMenu, ConfigMenuManager $manager): Response
+    #[Route(path: '/{id}/delete', name: 'config_menu_delete', methods: ['POST'])]
+    public function delete(Request $request, ConfigMenu $configMenu, ConfigMenuManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $configMenu);
 

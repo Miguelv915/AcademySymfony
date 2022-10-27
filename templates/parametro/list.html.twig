@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
-{% import 'macro/action.html.twig' as action %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import 'theme/action.html.twig' as action %}
 
 {% set _title = 'parametro' %}
 {% set _main_title = 'Listado' %}
@@ -111,11 +111,11 @@
     </ul>
 {% endblock %}
 
-{% block _stylesheets_vendors %}
+{% block stylesheets_vendors %}
     <link href="{{ asset(_theme ~ 'vendors/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
-{% block _javascripts_vendors %}
+{% block javascripts_vendors %}
     <script src="{{ asset(_theme ~ 'vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/datatables.js') }}" type="text/javascript"></script>
     <script>
@@ -125,7 +125,7 @@
             {data: 'alias'},
             {data: 'valor'},
             {data: 'padre'},
-            {data: 'activo'},
+            {data: 'isActive'},
             {data: 'Actions', responsivePriority: 6},
         ];
 

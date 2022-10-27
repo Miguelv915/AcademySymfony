@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
-{% import 'macro/action.html.twig' as action %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
 
 {% set _title = 'Usuarios' %}
 {% set _main_title = 'Mostrar' %}
@@ -11,41 +11,34 @@
 {% endblock %}
 
 {% block _main %}
-    {{ action.tbl_start() }}
-    {{ action.tbl_tr('Nombres' |gtrans,usuario.fullName) }}
-    {{ action.tbl_tr('Usuario'|gtrans,usuario.username) }}
-    {{ action.tbl_tr('Correo'|gtrans,usuario.email) }}
-    <tr>
-        <th>Roles</th>
-        <td>
-            {% for rol in usuario.roles %}
-                {{ rol }},
-            {% endfor %}
-        </td>
-    </tr>
-    <tr>
-        <th>Foto</th>
-        <td>
-            <img src="{{ usuario.foto|file_upload_webpath|default(asset('img/no-image.png')) }}" alt="foto" height="100" />
-        </td>
-    </tr>
-    {% include 'crud/_show_info.html.twig' with {'entity': usuario} %}
-    {{ action.tbl_end() }}
-
+    {{ table.tbl_start() }}
+        {{ table.tbl_tr('Nombres'|gtrans, usuario.fullName) }}
+        {{ table.tbl_tr('Usuario'|gtrans, usuario.username) }}
+        {{ table.tbl_tr('Correo'|gtrans, usuario.email) }}
+        <tr>
+            <th>Roles</th>
+            <td>
+                {% for rol in usuario.roles %}
+                    {{ rol }},
+                {% endfor %}
+            </td>
+        </tr>
+        {% if usuario.photo %}
+            <tr>
+                <th>Foto</th>
+                <td>
+                    <img src="{{ usuario.photo | attached_file_webpath }}"  alt="Photo"/>
+                </td>
+            </tr>
+        {% endif %}
+        {% include 'crud/_show_info.html.twig' with {'entity': usuario} %}
+    {{ table.tbl_end() }}
 {% endblock %}
 
 {% block _main_footer %}
     {% include 'crud/_show_links.html.twig' with {'route_base':'usuario','entity': usuario} %}
 {% endblock %}
 
-{% block _main_tools %}
-    {% include 'crud/_tools_ico.html.twig' %}
-{% endblock %}
-
 {% block _body_tools %}
     {% include 'crud/_show_links_ico.html.twig' with {'route_base':'usuario','entity': usuario} %}
-{% endblock %}
-
-{% block _body_tools_ico %}
-    {% include 'crud/_show_links_tool.html.twig' with {'route_base':'usuario','entity': usuario} %}
 {% endblock %}

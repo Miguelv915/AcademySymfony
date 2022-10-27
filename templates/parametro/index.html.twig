@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
-{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
-{% import 'macro/action.html.twig' as action %}
-{% import 'macro/pagination.html.twig' as pagination %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/pagination.html.twig' as pagination %}
 
 {% set _title = 'Parametro' %}
 {% set _main_title = 'Listado' %}
@@ -12,43 +11,62 @@
 {% endblock %}
 
 {% block _main %}
-    <div class="table-responsive">
-        {{ action.tbl_start() }}
-        {{ action.thead_start() }}
-        <tr>
-            {{ action.th('Padre', true) }}
-            {{ action.th('Nombre', true) }}
-            {{ action.th('Alias', true) }}
-            {{ action.th('Valor', true) }}
-            {{ action.th('Activo', true, 'text-center') }}
-            <th></th>
-        </tr>
-        {{ action.thead_end() }}
-        {{ action.tbody_start() }}
-        {% for parametro in paginator.results %}
+    {{ pagination.pager(paginator, _section) }}
+    {% embed 'theme/_table.html.twig' %}
+        {% block table_head %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
             <tr>
-                <td>{{ parametro.padre}}</td>
-                <td>{{ parametro.nombre }}</td>
-                <td>{{ parametro.alias}}</td>
-                <td>{{ parametro.valor }}</td>
-                <td class="text-center">{{ parametro.activo | yesno_custom | raw }}</td>
-                <td>
-                    {% if access.has('show') %}
-                        {{ action.btn_show_link2_ico(path('parametro_show', {'id': parametro.id})) }}
-                    {% endif %}
-                    {% if access.has('edit', parametro) %}
-                        {{ action.btn_edit_link2_ico(path('parametro_edit', {'id': parametro.id})) }}
-                    {% endif %}
-                </td>
+                {{ table.th('#') }}
+                {{ table.th('Datos', true, 'd-block d-sm-none') }}
+                {{ table.th('Padre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Alias', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Valor', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }}
+                <th></th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">No hay registros</td>
-            </tr>
-        {% endfor %}
-        {{ action.tbody_end() }}
-        {{ action.tbl_end() }}
-    </div>
+        {% endblock %}
+        {% block table_body %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            {% for parametro in paginator.results %}
+                <tr>
+                    <td class="text-center">{{ loop.index | index (paginator)}}</td>
+                    <td class="d-block d-sm-none">
+                        <table class="table gs-0 gy-0">
+                            {{ table.tbl_tr_th_td('Padre', parametro.parent) }}
+                            {{ table.tbl_tr_th_td('Nombre', parametro.name) }}
+                            {{ table.tbl_tr_th_td('Alias', parametro.alias) }}
+                            {{ table.tbl_tr_th_td('Valor', parametro.value, false) }}
+                            {{ table.tbl_tr_th_td('Activo', parametro.isActive  | yesno_custom) }}
+                        </table>
+                    </td>
+                    <td class="d-none d-sm-table-cell text-uppercase">{{ parametro.parent }}</td>
+                    <td class="d-none d-sm-table-cell">{{ parametro.name }}</td>
+                    <td class="d-none d-sm-table-cell">{{ parametro.alias }}</td>
+                    <td class="d-none d-sm-table-cell">{{ parametro.value }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ parametro.isActive | yesno_custom | raw }}</td>
+                    <td class="">
+                        <div class="float-end">
+                            {% if access.has('show', parametro) %}
+                                {{ action.btn_show_link2_ico(path('parametro_show', {'id': parametro.id})) }}
+                            {% endif %}
+                            {% if access.has('edit', parametro) %}
+                                {{ action.btn_edit_link2_ico(path('parametro_edit', {'id': parametro.id})) }}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No hay registros</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 
     {{ pagination.show(paginator, _section) }}
 {% endblock %}
@@ -57,42 +75,18 @@
     {% include 'crud/_index_links.html.twig' with {'route_base': 'parametro'} %}
 {% endblock%}
 
-{% block _main_options %}
-    {% include 'crud/_index_filter.html.twig' %}
-{% endblock %}
-
-{% block _main_tools %}
-    {% include 'crud/_tools_ico.html.twig' %}
-{% endblock %}
-
-{% block _body_tools_ico %}
-    {% include 'crud/_index_links_tool.html.twig' with {'route_base': 'parametro'}  %}
-{% endblock %}
-
 {% block _body_tools %}
     {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'parametro'}  %}
 {% endblock %}
 
-{% block _stylesheets %}
+{% block stylesheets %}
 {% endblock %}
 
-{% block _javascripts %}
+{% block javascripts %}
+    <script src="{{ asset('js/crud/list.js') }}"></script>
     <script>
-        jQuery(document).ready(function () {
-            $(document).on('change', '#filter_size', function () {
-                let route = '{{ path('parametro_index') }}';
-                route = route + "?" + 'n=' + $('#filter_size option:selected').val();
-                route = route + "&" + 'b=' + $('#filter_text').val();
-                window.location = route;
-            });
-
-            $(document).on('click', '.btn-send', function () {
-                window.location = '{{ path('parametro_index') }}';
-            });
-
-            $(document).on('click', '.btn-clean', function () {
-                window.location.href = '{{ path('parametro_index') }}';
-            });
+        $(document).ready(function () {
+            CRUDList.init('{{ path('parametro_index') }}');
         });
     </script>
 {% endblock %}

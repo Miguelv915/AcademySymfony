@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
-{% import 'macro/action.html.twig' as action %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import 'theme/action.html.twig' as action %}
 
 {% set _title = 'Perfil' %}
 {% set _main_title = 'Editar' %}
@@ -141,10 +141,10 @@
     </div>
 {% endblock %}
 
-{% block _stylesheets %}
+{% block stylesheets %}
 {% endblock %}
 
-{% block _javascripts %}
+{% block javascripts %}
     <script src="{{ asset('js/select2.js') }}"></script>
     <script>
         jQuery(document).ready(function() {

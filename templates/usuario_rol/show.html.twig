@@ -1,34 +1,28 @@
 {% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
 
-{% block title %}UsuarioRol{% endblock %}
+{% set _title = 'Rol de Usuario' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'usuario_rol_index'%}
 
-{% block body %}
-    <h1>UsuarioRol</h1>
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ usuario_rol.id }}</td>
-            </tr>
-            <tr>
-                <th>Nombre</th>
-                <td>{{ usuario_rol.nombre }}</td>
-            </tr>
-            <tr>
-                <th>Rol</th>
-                <td>{{ usuario_rol.rol }}</td>
-            </tr>
-            <tr>
-                <th>Activo</th>
-                <td>{{ usuario_rol.activo ? 'Yes' : 'No' }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block _main %}
+    {{ table.tbl_start() }}
+    {{ table.tbl_tr('Nombre',usuario_rol.name) }}
+    {{ table.tbl_tr('Rol',usuario_rol.rol) }}
+    {% include 'crud/_show_info.html.twig' with {'entity': usuario_rol} %}
+    {{ table.tbl_end() }}
 
-    <a href="{{ path('usuario_rol_index') }}">back to list</a>
+{% endblock %}
 
-    <a href="{{ path('usuario_rol_edit', {'id': usuario_rol.id}) }}">edit</a>
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'usuario_rol','entity': usuario_rol} %}
+{% endblock %}
 
-    {{ include('usuario_rol/_delete_form.html.twig') }}
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'usuario_rol','entity': usuario_rol} %}
 {% endblock %}

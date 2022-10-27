@@ -2,10 +2,10 @@
     <div class="form-group row">
         <label class="col-sm-1 col-4 col-form-label" for="filter_size">Ver:</label>
         <div class="col-sm-1 col-4">
-            <select id="filter_size" class="form-control m-input" name="n">
+            <select id="filter_size" class="form-select form-select-sm" name="n">
                 {% for key,value in default_results_per_page %}
                     <option value="{{ value }}"
-                            {% if app.request.get('n') == value %}selected{% endif %}>{{ key }}</option>
+                        {% if app.request.get('n') == value %}selected{% endif %}>{{ key }}</option>
                 {% endfor %}
             </select>
         </div>

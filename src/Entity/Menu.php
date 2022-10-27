@@ -40,7 +40,7 @@ class Menu extends AuthMenu
     #[Column(type: 'smallint')]
     private ?int $ranking;
 
-    #[ManyToOne(targetEntity: Menu::class)]
+    #[ManyToOne(targetEntity: self::class)]
     private ?Menu $parent = null;
 
     #[Column(type: 'string', length: 15, nullable: true)]
@@ -49,6 +49,11 @@ class Menu extends AuthMenu
     public function __construct()
     {
         $this->ranking = 0;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 
     public function getId(): ?int
@@ -126,10 +131,5 @@ class Menu extends AuthMenu
         $this->badge = $badge;
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getName();
     }
 }

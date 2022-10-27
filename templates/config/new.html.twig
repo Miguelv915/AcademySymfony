@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
-{% import 'macro/action.html.twig' as action %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import 'theme/action.html.twig' as action %}
 
 {% set _title = 'Configuración' %}
 {% set _main_title = 'Nuevo' %}
@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block _config_menus_entry_widget -%}
-    {% import 'macro/action.html.twig' as actions %}
+    {% import 'theme/action.html.twig' as actions %}
     {{ actions.frm_field_two_with_label(form.name,form.route, 'mb-0','form-control-sm') }}
 {%- endblock %}
 
@@ -40,10 +40,10 @@
     {% include 'crud/_new_links.html.twig' with {'route_base':'config'} %}
 {% endblock %}
 
-{% block _stylesheets %}
+{% block stylesheets %}
 {% endblock %}
 
-{% block _javascripts %}
+{% block javascripts %}
     <script src="{{ asset('js/select2.js') }}"></script>
     <script>
         $(document).ready(function() {

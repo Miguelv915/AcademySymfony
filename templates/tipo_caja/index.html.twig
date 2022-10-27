@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/pagination.html.twig' as pagination %}
+
+{% set _title = 'Tipo de Caja' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'tipo_caja_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show(_title) }}
+{% endblock %}
+
+{% block _main %}
+    {{ pagination.pager(paginator, _section) }}
+    {% embed 'theme/_table.html.twig' %}
+        {% block table_head %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            <tr>
+                {{ table.th('#') }}
+                {{ table.th('Datos', true, 'd-block d-sm-none') }}
+                {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }}
+                <th></th>
+            </tr>
+        {% endblock %}
+        {% block table_body %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            {% for tipo_caja in paginator.results %}
+                <tr>
+                    <td class="text-center">{{ loop.index | index (paginator)}}</td>
+                    <td class="d-block d-sm-none">
+                        <table class="table gs-0 gy-0">
+                            {{ table.tbl_tr_th_td('Nombre', tipo_caja.nombre) }}
+                            {{ table.tbl_tr_th_td('Activo', tipo_caja.isActive  | yesno_custom) }}
+                        </table>
+                    </td>
+                    <td class="d-none d-sm-table-cell">{{ tipo_caja.nombre }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ tipo_caja.isActive | yesno_custom | raw }}</td>
+                    <td class="">
+                        <div class="float-end">
+                            {% if access.has('show', tipo_caja) %}
+                                {{ action.btn_show_link2_ico(path('tipo_caja_show', {'id': tipo_caja.id})) }}
+                            {% endif %}
+                            {% if access.has('edit', tipo_caja) %}
+                                {{ action.btn_edit_link2_ico(path('tipo_caja_edit', {'id': tipo_caja.id})) }}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No hay registros</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'tipo_caja'} %}
+{% endblock%}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'tipo_caja'}  %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/crud/list.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            CRUDList.init('{{ path('tipo_caja_index') }}');
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/pagination.html.twig' as pagination %}
+
+{% set _title = 'Sector' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'sector_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show(_title) }}
+{% endblock %}
+
+{% block _main %}
+    {{ pagination.pager(paginator, _section) }}
+    {% embed 'theme/_table.html.twig' %}
+        {% block table_head %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            <tr>
+                {{ table.th('#') }}
+                {{ table.th('Datos', true, 'd-block d-sm-none') }}
+                {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Descripción', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }}
+                <th></th>
+            </tr>
+        {% endblock %}
+        {% block table_body %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            {% for sector in paginator.results %}
+                <tr>
+                    <td class="text-center">{{ loop.index | index (paginator)}}</td>
+                    <td class="d-block d-sm-none">
+                        <table class="table gs-0 gy-0">
+                            {{ table.tbl_tr_th_td('Nombre', sector.nombre) }}
+                            {{ table.tbl_tr_th_td('Descripción', sector.descripcion, false) }}
+                            {{ table.tbl_tr_th_td('Activo', sector.isActive  | yesno_custom) }}
+                        </table>
+                    </td>
+                    <td class="d-none d-sm-table-cell">{{ sector.nombre }}</td>
+                    <td class="d-none d-sm-table-cell">{{ sector.descripcion }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ sector.isActive | yesno_custom | raw }}</td>
+                    <td class="">
+                        <div class="float-end">
+                            {% if access.has('show', sector) %}
+                                {{ action.btn_show_link2_ico(path('sector_show', {'id': sector.id})) }}
+                            {% endif %}
+                            {% if access.has('edit', sector) %}
+                                {{ action.btn_edit_link2_ico(path('sector_edit', {'id': sector.id})) }}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No hay registros</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'sector'} %}
+{% endblock%}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'sector'}  %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/crud/list.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            CRUDList.init('{{ path('sector_index') }}');
+        });
+    </script>
+{% endblock %}

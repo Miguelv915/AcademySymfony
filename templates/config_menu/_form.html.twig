@@ -1,15 +1,9 @@
-{% import 'macro/action.html.twig' as action %}
+{% import 'theme/form.html.twig' as frm %}
 
-{{ action.frm_start(form) }}
-    {{ action.frm_column(
-        action.frm_column_field(form.name),
-        action.frm_column_field(form.route)
+{{ form_start(form) }}
+    {{ frm.column2(
+        frm.row(form.name),
+        frm.row(form.route)
     ) }}
-    {{ action.frm_column(
-        action.frm_column_btn(button_label|default('Guardar')),
-        null,
-        null,
-        null,
-        2
-    ) }}
-{{ action.frm_end(form) }}
+    {{ frm.button(button_label|default('Guardar')) }}
+{{ form_end(form) }}

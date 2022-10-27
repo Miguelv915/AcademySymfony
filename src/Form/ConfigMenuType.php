@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace Pidia\Apps\Demo\Form;
 
 use Pidia\Apps\Demo\Entity\ConfigMenu;
@@ -13,8 +18,7 @@ class ConfigMenuType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('route')
-        ;
+            ->add('route');
     }
 
     public function configureOptions(OptionsResolver $resolver)

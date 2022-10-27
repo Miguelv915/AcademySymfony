@@ -1,0 +1,194 @@
+{% macro btn_link(label, link, icon, btn_class='default',attributes='', title='') %}
+    <a href="{{ link }}" title="{{ title|trans }}"
+       class="btn btn-light-{{ btn_class }} btn-sm" {{ attributes }}>
+        {% if title %}<span>{% endif %}
+            {% if icon %}<i class="{{ icon }}"></i>{% endif %}
+            {% if label %}<span>{{ label|trans }}</span>{% endif %}
+            {% if label %}</span>{% endif %}
+    </a>
+{% endmacro %}
+
+{% macro btn_link_ico(link, icon, btn_class='default',attributes='', title='') %}
+    <a href="{{ link }}" data-toggle="tooltip" title="{{ title|trans }}"
+       class="btn btn-sm btn-icon btn-light-{{ btn_class }}" {{ attributes }}>
+        <i class="{{ icon }}"></i>
+    </a>
+{% endmacro %}
+
+{% macro btn_list_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.list',link,'fa fa-list-ul','info', attributes) }}
+{% endmacro %}
+
+{% macro btn_new_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.new',link,'fa fa-file','success', attributes) }}
+{% endmacro %}
+
+{% macro btn_edit_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.edit',link,'fa fa-pencil-alt','warning', attributes) }}
+{% endmacro %}
+
+{% macro btn_print_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.print',link,'fa fa-print','primary btn-print', attributes) }}
+{% endmacro %}
+
+{% macro btn_export_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.export',link,'fa fa-download','dark btn-export', attributes) }}
+{% endmacro %}
+
+{% macro btn_import_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.import',link,'fa fa-upload','primary btn-import', attributes) }}
+{% endmacro %}
+
+{% macro btn_report_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.report',link,'fa fa-print','info btn-report', attributes) }}
+{% endmacro %}
+
+{% macro btn_list_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-list-ul','info', attributes, 'lbl.list') }}
+{% endmacro %}
+
+{% macro btn_new_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-file','success', attributes, 'lbl.new') }}
+{% endmacro %}
+
+{% macro btn_edit_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-pencil-alt','warning', attributes, 'lbl.edit') }}
+{% endmacro %}
+
+{% macro btn_print_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-print','primary', attributes, 'lbl.print') }}
+{% endmacro %}
+
+{% macro btn_export_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-download','dark btn-export', attributes, 'lbl.export') }}
+{% endmacro %}
+
+{% macro btn_import_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-upload','primary btn-import', attributes, 'lbl.import') }}
+{% endmacro %}
+
+{% macro btn_report_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-print','info btn-report', attributes, 'lbl.report') }}
+{% endmacro %}
+
+{% macro btn_delete_form(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de inhabilitar este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="js-swal-confirm btn btn-sm btn-active-light-danger">
+                <span>
+                    <i class="fa fa-ban"></i>
+                    <span>{{ 'inhabilitar'|gtrans|capitalize }}</span>
+                </span>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_delete_form_ico(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm({{ 'Seguro de eliminar este registro?'|gtrans }});"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="btn btn-sm btn-icon btn-active-light-danger" data-toggle="tooltip" title="{{ 'lbl.delete'| trans }}">
+            <i class="fa fa-ban"></i>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_restore_form(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de restuarar este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="btn btn-sm btn-active-light-primary">
+                <span>
+                    <i class="fa fa-redo"></i>
+                    <span>{{ 'habilitar'|gtrans|capitalize }}</span>
+                </span>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_restore_form_ico(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de resturar este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="btn btn-sm btn-icon btn-active-light-primary" data-toggle="tooltip" title="{{ 'lbl.restore'| trans }}">
+            <i class="fa fa-redo"></i>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_delete_forever_form(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de eliminar definitivamente este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="btn btn-light-danger btn-sm">
+                <span>
+                    <i class="fa fa-trash"></i>
+                    <span>{{ 'lbl.delete.forever'|trans }}</span>
+                </span>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_delete_forever_form_ico(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de eliminar este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="btn btn-sm btn-icon btn-danger" data-toggle="tooltip" title="{{ 'lbl.delete.forever'| trans }}">
+            <i class="fa fa-trash"></i>
+        </button>
+    </form>
+{% endmacro %}
+
+
+{% macro btn_link2(label, link, icon, btn_class='default',attributes='', title='') %}
+    <a href="{{ link }}" class="btn btn-sm btn-active-light-dark btn-icon" {{ attributes }} title="{{ title | trans }}" >
+        {% if icon %}<i class="{{ icon }} text-{{ btn_class }}"></i>{% endif %}
+        {% if label %}<span>{{ label|trans }}</span>{% endif %}
+    </a>
+{% endmacro %}
+
+{% macro btn_show_link2(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2('lbl.view',link,'search','info', attributes, 'lbl.view') }}
+{% endmacro %}
+
+{% macro btn_show_link2_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2(null,link,'fa fa-search','info', attributes, 'lbl.view') }}
+{% endmacro %}
+
+{% macro btn_edit_link2_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2(null,link,'fa fa-pencil-alt','warning', attributes, 'lbl.edit') }}
+{% endmacro %}
+
+{% macro btn_print_link2_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2(null,link,'fa fa-print','primary', attributes, 'lbl.print') }}
+{% endmacro %}
+
+{% macro btn_delete_link2_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2(null,link,'fa fa-trash','danger btn-delete', attributes, 'lbl.delete') }}
+{% endmacro %}

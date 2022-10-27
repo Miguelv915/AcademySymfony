@@ -46,7 +46,7 @@ class UsuarioRolRepository extends BaseRepository
 
         $this->security->filterQuery($queryBuilder, UsuarioRolController::BASE_ROUTE, $permissions);
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['usuarioRol.nombre']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['usuarioRol.name']);
 
         return $queryBuilder;
     }
@@ -55,9 +55,9 @@ class UsuarioRolRepository extends BaseRepository
     {
         return $this->createQueryBuilder('usuarioRol')
             ->select(['usuarioRol', 'usuarios', 'config', 'owner'])
-            ->leftJoin('usuarioRol.usuarios', 'usuarios')
+            ->leftJoin('usuarioRol.users', 'usuarios')
             ->leftJoin('usuarioRol.config', 'config')
-            ->leftJoin('usuarioRol.propietario', 'owner')
+            ->leftJoin('usuarioRol.owner', 'owner')
             ->andWhere('usuarioRol.rol <> :roleSuperAdmin OR :isSuperAdmin = true')
             ->setParameter('roleSuperAdmin', Security::ROLE_SUPER_ADMIN)
             ->setParameter('isSuperAdmin', $this->security->isSuperAdmin());

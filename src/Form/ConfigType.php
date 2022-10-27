@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace Pidia\Apps\Demo\Form;
 
 use Pidia\Apps\Demo\Entity\Config;
@@ -16,12 +21,10 @@ class ConfigType extends AbstractType
         $builder
             ->add('alias')
             ->add('nombre')
-            ->add('nombreCorto')
             ->add('menus', EntityType::class, [
                 'class' => ConfigMenu::class,
                 'multiple' => true,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

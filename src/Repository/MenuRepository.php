@@ -13,7 +13,6 @@ use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Pidia\Apps\Demo\Controller\ConfigController;
 use Pidia\Apps\Demo\Controller\MenuController;
 use Pidia\Apps\Demo\Entity\Menu;
 
@@ -46,10 +45,9 @@ class MenuRepository extends BaseRepository
         $queryBuilder = $this->createQueryBuilder('menu')
             ->select(['menu', 'parent'])
             ->join('menu.config', 'config')
-            ->leftJoin('menu.parent', 'parent')
-        ;
+            ->leftJoin('menu.parent', 'parent');
 
-        $this->security->filterQuery($queryBuilder, ConfigController::BASE_ROUTE, $permissions);
+        $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE, $permissions);
 
         DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['menu.name', 'parent.name']);
 
@@ -66,11 +64,10 @@ class MenuRepository extends BaseRepository
             ->addSelect('menu.icono as icono')
             ->join('menu.config', 'config')
             ->leftJoin('menu.parent', 'parent')
-            ->where('menu.activo = TRUE')
+            ->where('menu.isActive = TRUE')
             ->orderBy('parent.ranking', 'ASC')
             ->addOrderBy('menu.ranking', 'ASC')
-            ->addOrderBy('menu.name', 'ASC')
-            ;
+            ->addOrderBy('menu.name', 'ASC');
 
         $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE);
 
@@ -85,12 +82,11 @@ class MenuRepository extends BaseRepository
             ->addSelect('menu.route as route')
             ->leftJoin('menu.parent', 'parent')
             ->leftJoin('menu.config', 'config')
-            ->where('menu.activo = TRUE')
+            ->where('menu.isActive = TRUE')
             ->andWhere('menu.parent IS NOT NULL')
             ->orderBy('parent.ranking', 'ASC')
             ->addOrderBy('menu.ranking', 'ASC')
-            ->addOrderBy('menu.name', 'ASC')
-        ;
+            ->addOrderBy('menu.name', 'ASC');
 
         $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE);
 
@@ -102,15 +98,14 @@ class MenuRepository extends BaseRepository
         return $this->createQueryBuilder('menu')
             ->select(['menu', 'parent'])
             ->join('menu.config', 'config')
-            ->leftJoin('menu.parent', 'parent')
-            ;
+            ->leftJoin('menu.parent', 'parent');
     }
 
     /** @return Menu[] */
     public function searchAllActiveWithOrder(): array
     {
         return $this->allQuery()
-            ->where('menu.activo = true')
+            ->where('menu.isActive = true')
             ->orderBy('parent.ranking')
             ->addOrderBy('menu.ranking')
             ->addOrderBy('menu.name', 'ASC')

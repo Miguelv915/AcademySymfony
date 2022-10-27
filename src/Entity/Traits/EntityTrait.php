@@ -22,36 +22,40 @@ use Symfony\Component\Uid\Uuid;
 
 trait EntityTrait
 {
-    #[ManyToOne(targetEntity: 'Pidia\Apps\Demo\Entity\Usuario')]
-    #[JoinColumn(nullable: true)]
-    private ?Usuario $propietario = null;
-
-    #[ManyToOne(targetEntity: 'Pidia\Apps\Demo\Entity\Config')]
-    #[JoinColumn(nullable: true)]
-    private ?Config $config = null;
-
     #[Column(name: 'created_at', type: 'datetime')]
     protected ?DateTimeInterface $createdAt = null;
 
     #[Column(name: 'updated_at', type: 'datetime')]
     protected ?DateTimeInterface $updatedAt = null;
+    #[ManyToOne(targetEntity: Usuario::class)]
+    #[JoinColumn(nullable: true)]
+    private ?Usuario $owner = null;
+
+    #[ManyToOne(targetEntity: Config::class)]
+    #[JoinColumn(nullable: true)]
+    private ?Config $config = null;
 
     #[Column(type: 'boolean')]
     #[Groups(groups: 'default')]
-    private bool $activo;
+    private bool $isActive;
 
     #[Column(type: 'uuid', unique: true)]
     private ?Uuid $uuid = null;
 
-    public function activo(): bool
+    public function isActive(): bool
     {
-        return $this->activo;
+        return $this->isActive;
     }
 
-    public function changeActivo(): bool
+    public function setIsActive(bool $isActive): void
     {
-        $state = $this->activo;
-        $this->activo = !$state;
+        $this->isActive = $isActive;
+    }
+
+    public function changeActive(): bool
+    {
+        $state = $this->isActive;
+        $this->isActive = !$state;
 
         return $state;
     }
@@ -66,16 +70,16 @@ trait EntityTrait
         return $this->updatedAt;
     }
 
-    public function propietario(): ?Usuario
+    public function owner(): ?Usuario
     {
-        return $this->propietario;
+        return $this->owner;
     }
 
-    public function setPropietario(Usuario|UserInterface|null $propietario): self
+    public function setOwner(Usuario|UserInterface|null $owner): self
     {
-        if (null !== $propietario) {
-            $this->propietario = $propietario;
-            $this->setConfig($propietario->config());
+        if (null !== $owner) {
+            $this->owner = $owner;
+            $this->setConfig($owner->config());
         }
 
         return $this;
@@ -99,14 +103,13 @@ trait EntityTrait
     }
 
     #[PrePersist]
-    public function init()
+    public function init(): void
     {
         $this->uuid = Uuid::v4();
-        $this->activo = true;
+        $this->isActive = true;
     }
 
-    #[PrePersist]
-    #[PreUpdate]
+    #[PrePersist, PreUpdate]
     public function updatedDatetime(): void
     {
         $this->updatedAt = new DateTime();

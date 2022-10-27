@@ -1,3 +1,12 @@
+controllers:
+    resource: ../src/Controller/
+    type: annotation
+    prefix: /{_locale}
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+
 homepage:
     path: /{_locale}
     controller: Pidia\Apps\Demo\Controller\DefaultController::home
@@ -6,11 +15,3 @@ homepage:
     defaults:
         template: default/homepage.html.twig
         _locale: '%locale%'
-
-#controllers:
-#    resource: ../src/Controller/
-#    type: annotation
-
-#kernel:
-#    resource: ../src/Kernel.php
-#    type: annotation

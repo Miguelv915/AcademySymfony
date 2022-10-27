@@ -1,0 +1,23 @@
+{% use 'bootstrap_5_layout.html.twig' %}
+
+{% block collections_row -%}
+    <div class="row">
+        <label class="{% if required %}required{% endif %}">
+            {{ label ?? name|humanize }}
+        </label>
+        <div class="">
+            <ul id="{{ id }}"
+                class="list-group" data-prototype="{{ form_widget(prototype)|e('html_attr') }}"
+                    {% if prototype.vars.name %} data-prototype-name="{{ prototype.vars.name | e }}" {% endif %}
+                data-widget-tags="{{ '<li class="list-group-item pe-sm-12 collection-item"></li>'|e }}"
+            >
+                {%- for child in form %}
+                    <li class="list-group-item pe-sm-12 collection-item" style="position: relative;">
+                        {{- form_errors(child) -}}
+                        {{- form_widget(child) -}}
+                    </li>
+                {% endfor -%}
+            </ul>
+        </div>
+    </div>
+{%- endblock collections_row %}

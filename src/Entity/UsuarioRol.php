@@ -31,20 +31,25 @@ class UsuarioRol extends AuthRole
     private ?int $id = null;
 
     #[Column(type: 'string', length: 50)]
-    private ?string $nombre;
+    private ?string $name;
 
     #[Column(type: 'string', length: 30)]
     private ?string $rol;
 
     #[ManyToMany(targetEntity: Usuario::class, mappedBy: 'usuarioRoles')]
-    private Collection $usuarios;
+    private Collection $users;
 
     #[Column(type: 'menu_permission_json', nullable: true)]
     private ?array $permissions = [];
 
     public function __construct()
     {
-        $this->usuarios = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 
     public function getId(): ?int
@@ -52,16 +57,14 @@ class UsuarioRol extends AuthRole
         return $this->id;
     }
 
-    public function getNombre(): string
+    public function getName(): ?string
     {
-        return $this->nombre;
+        return $this->name;
     }
 
-    public function setNombre(string $nombre): self
+    public function setName(?string $name): void
     {
-        $this->nombre = trim($nombre);
-
-        return $this;
+        $this->name = trim($name);
     }
 
     public function getRol(): ?string
@@ -71,7 +74,7 @@ class UsuarioRol extends AuthRole
 
     public function setRol(?string $rol): self
     {
-        $this->rol = $rol;
+        $this->rol = mb_strtoupper(trim($rol));
 
         return $this;
     }
@@ -79,24 +82,24 @@ class UsuarioRol extends AuthRole
     /**
      * @return Collection|Usuario[]
      */
-    public function getUsuarios(): Collection|array
+    public function getUsers(): Collection|array
     {
-        return $this->usuarios;
+        return $this->users;
     }
 
-    public function addUsuario(Usuario $usuario): self
+    public function addUser(Usuario $user): self
     {
-        if (!$this->usuarios->contains($usuario)) {
-            $this->usuarios[] = $usuario;
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
         }
 
         return $this;
     }
 
-    public function removeUsuario(Usuario $usuario): self
+    public function removeUser(Usuario $user): self
     {
-        if ($this->usuarios->contains($usuario)) {
-            $this->usuarios->removeElement($usuario);
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
         }
 
         return $this;
@@ -122,15 +125,5 @@ class UsuarioRol extends AuthRole
     public function role(): string
     {
         return $this->getRol();
-    }
-
-    public function owner(): ?Usuario
-    {
-        return $this->propietario();
-    }
-
-    public function __toString(): string
-    {
-        return $this->getNombre();
     }
 }

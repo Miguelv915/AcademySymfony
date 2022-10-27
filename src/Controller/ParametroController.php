@@ -44,9 +44,9 @@ class ParametroController extends WebAuthController
         $this->denyAccess([Permission::EXPORT]);
 
         $headers = [
-            'nombre' => 'Nombre',
+            'name' => 'Nombre',
             'alias' => 'Alias',
-            'activo' => 'Activo',
+            'isActive' => 'Activo',
         ];
 
         $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
@@ -115,13 +115,13 @@ class ParametroController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'parametro_delete', methods: ['POST'])]
-    public function delete(Request $request, Parametro $parametro, ParametroManager $manager): Response
+    #[Route(path: '/{id}/state', name: 'parametro_change_state', methods: ['POST'])]
+    public function state(Request $request, Parametro $parametro, ParametroManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $parametro);
 
-        if ($this->isCsrfTokenValid('delete'.$parametro->getId(), $request->request->get('_token'))) {
-            $parametro->changeActivo();
+        if ($this->isCsrfTokenValid('change_state'.$parametro->getId(), $request->request->get('_token'))) {
+            $parametro->changeActive();
             if ($manager->save($parametro)) {
                 $this->addFlash('success', 'Estado ha sido actualizado');
             } else {
@@ -132,8 +132,8 @@ class ParametroController extends WebAuthController
         return $this->redirectToRoute('parametro_index');
     }
 
-    #[Route(path: '/{id}/delete', name: 'parametro_delete_forever', methods: ['POST'])]
-    public function deleteForever(Request $request, Parametro $parametro, ParametroManager $manager): Response
+    #[Route(path: '/{id}/delete', name: 'parametro_delete', methods: ['POST'])]
+    public function delete(Request $request, Parametro $parametro, ParametroManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $parametro);
 

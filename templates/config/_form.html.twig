@@ -1,33 +1,10 @@
-{% import 'macro/action.html.twig' as action %}
+{% import 'theme/form.html.twig' as frm %}
 
-{{ action.frm_start(form) }}
-
-    {{ action.frm_column(
-        action.frm_column_field(form.alias),
-        null,
-        null,
-        null,
-        2
+{{ form_start(form) }}
+    {{ frm.column2(
+            frm.row(form.alias),
+            frm.row(form.nombre)
     ) }}
-
-    {{ action.frm_column(
-        action.frm_column_field(form.nombre),
-        action.frm_column_field(form.nombreCorto)
-    ) }}
-
-    {{ action.frm_column(
-        action.frm_column_field_select(form.menus,'','',2),
-        null,
-        null,
-        null,
-        1
-    ) }}
-
-    {{ action.frm_column(
-        action.frm_column_btn(button_label|default('Guardar')),
-        null,
-        null,
-        null,
-        2
-    ) }}
-{{ action.frm_end(form) }}
+    {{ frm.column(form.menus, 2) }}
+    {{ frm.button(button_label|default('Guardar')) }}
+{{ form_end(form) }}

@@ -15,9 +15,10 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
+use Pidia\Apps\Demo\Repository\ParametroRepository;
 use Symfony\Component\Validator\Constraints\Length;
 
-#[Entity(repositoryClass: 'Pidia\Apps\Demo\Repository\ParametroRepository')]
+#[Entity(repositoryClass: ParametroRepository::class)]
 #[HasLifecycleCallbacks]
 class Parametro
 {
@@ -26,30 +27,39 @@ class Parametro
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
+
     #[Column(type: 'string', length: 100)]
-    private $nombre;
-    #[Column(type: 'string', length: 16, nullable: true)]
-    #[Length(max: 16, maxMessage: 'Debe tener un máximo de 16 carácteres')]
-    private $alias;
+    private ?string $name;
+
+    #[Column(type: 'string', length: 10, nullable: true)]
+    #[Length(max: 10, maxMessage: 'Debe tener un máximo de 10 carácteres')]
+    private ?string $alias;
+
     #[Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    private $valor;
-    #[ManyToOne(targetEntity: 'Pidia\Apps\Demo\Entity\Parametro')]
-    private $padre;
+    private ?string $value;
+
+    #[ManyToOne(targetEntity: self::class)]
+    private ?Parametro $parent;
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNombre(): string
+    public function getName(): string
     {
-        return $this->nombre;
+        return $this->name;
     }
 
-    public function setNombre(string $nombre): self
+    public function setName(string $name): self
     {
-        $this->nombre = $nombre;
+        $this->name = $name;
 
         return $this;
     }
@@ -61,49 +71,44 @@ class Parametro
 
     public function setAlias(string $alias): self
     {
-        $this->alias = $alias; //Generator::withoutWhiteSpaces($alias);
+        $this->alias = $alias; // Generator::withoutWhiteSpaces($alias);
 
         return $this;
     }
 
-    public function getValor()
+    public function getValue(): ?string
     {
-        return $this->valor;
+        return $this->value;
     }
 
-    public function setValor($valor): self
+    public function setValue(?string $value): self
     {
-        $this->valor = $valor;
+        $this->value = $value;
 
         return $this;
     }
 
-    public function getPadre(): ?self
+    public function getParent(): ?self
     {
-        return $this->padre;
+        return $this->parent;
     }
 
-    public function setPadre(?self $padre): self
+    public function setParent(?self $parent): self
     {
-        $this->padre = $padre;
+        $this->parent = $parent;
 
         return $this;
     }
 
-    public function __toString(): string
+    public static function namesToArray(Collection $parametros): array
     {
-        return $this->getNombre();
-    }
-
-    public static function nombresToArray(Collection $parametros): array
-    {
-        $nombres = [];
+        $names = [];
 
         /** @var Parametro $parametro */
         foreach ($parametros as $parametro) {
-            $nombres[] = $parametro->getNombre();
+            $names[] = $parametro->getName();
         }
 
-        return $nombres;
+        return $names;
     }
 }
