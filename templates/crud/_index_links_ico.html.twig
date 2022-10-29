@@ -5,5 +5,5 @@
 {% endif %}
 
 {% if access.has('export') %}
-    {{ action.btn_export_link_ico(path(route_base ~ '_export')) }}
+    {{ action.btn_export_link_ico(path(route_base ~ '_export', app.request.query.all)) }}
 {% endif %}

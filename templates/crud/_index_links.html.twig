@@ -4,5 +4,5 @@
     {{ action.btn_new_link(path(route_base ~ '_new')) }}
 {% endif %}
 {% if access.has('export') %}
-    {{ action.btn_export_link(path(route_base ~ '_export')) }}
+    {{ action.btn_export_link(path(route_base ~ '_export', app.request.query.all)) }}
 {% endif %}
