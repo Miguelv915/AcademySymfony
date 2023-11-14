@@ -2,15 +2,21 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace Pidia\Apps\Demo\Service\Menu;
 
 use CarlosChininin\App\Domain\Model\AuthMenu\MenuServiceInterface;
 use Pidia\Apps\Demo\Repository\MenuRepository;
 
-final class MenuService implements MenuServiceInterface
+final readonly class MenuService implements MenuServiceInterface
 {
-    public function __construct(private readonly MenuRepository $menuRepository)
-    {
+    public function __construct(
+        private MenuRepository $menuRepository
+    ) {
     }
 
     public function menusToArray(): array

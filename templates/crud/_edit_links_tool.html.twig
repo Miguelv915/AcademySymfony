@@ -7,12 +7,12 @@
     {{ action.btn_new_link_tool(path(route_base ~ '_new')) }}
 {% endif %}
 {% if access.delete and entity.isActive == true %}
-    {{ action.btn_delete_form_tool(path(route_base ~ '_delete', {'id': entity.id}), csrf_token('delete' ~ entity.id)) }}
+    {{ action.btn_delete_form_tool(path(route_base ~ '_delete', {'uuid': entity.uuid}), csrf_token('delete' ~ entity.id)) }}
 {% endif %}
 {% if access.delete and entity.isActive == false %}
-    {{ action.btn_restore_form_tool(path(route_base ~ '_delete', {'id': entity.id}), csrf_token('delete' ~ entity.id)) }}
+    {{ action.btn_restore_form_tool(path(route_base ~ '_delete', {'uuid': entity.uuid}), csrf_token('delete' ~ entity.id)) }}
 {% endif %}
 {% if access.master %}
     <div class="dropdown-divider"></div>
-    {{ action.btn_delete_forever_form_tool(path(route_base ~ '_delete_forever', {'id': entity.id}), csrf_token('delete_forever' ~ entity.id)) }}
+    {{ action.btn_delete_forever_form_tool(path(route_base ~ '_delete_forever', {'uuid': entity.uuid}), csrf_token('delete_forever' ~ entity.id)) }}
 {% endif %}

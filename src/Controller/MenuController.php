@@ -47,15 +47,29 @@ class MenuController extends WebAuthController
         $this->denyAccess([Permission::EXPORT]);
 
         $headers = [
-            'parent.name' => 'Padre',
-            'name' => 'Nombre',
-            'route' => 'Ruta',
-            'icon' => 'Icono',
-            'ranking' => 'Orden',
-            'isActive' => 'Activo',
+            'Padre',
+            'Nombre',
+            'Ruta',
+            'Icono',
+            'Orden',
+            'Activo',
         ];
 
-        $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
+        /** @var Menu[] $menus */
+        $menus = $manager->dataExport(ParamFetcher::fromRequestQuery($request));
+        $items = [];
+        foreach ($menus as &$menu) {
+            $item = [];
+            $item[] = $menu->getParent()?->getName();
+            $item[] = $menu->getName();
+            $item[] = $menu->getRoute();
+            $item[] = $menu->getIcon();
+            $item[] = $menu->getRanking();
+            $item[] = $menu->isActive();
+
+            $items[] = $item;
+            unset($item, $menu);
+        }
 
         return $manager->export($items, $headers, 'menu');
     }
@@ -88,7 +102,7 @@ class MenuController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'menu_show', methods: ['GET'])]
+    #[Route(path: '/{uuid}', name: 'menu_show', methods: ['GET'])]
     public function show(Menu $menu): Response
     {
         $this->denyAccess([Permission::SHOW], $menu);
@@ -96,7 +110,7 @@ class MenuController extends WebAuthController
         return $this->render('menu/show.html.twig', ['menu' => $menu]);
     }
 
-    #[Route(path: '/{id}/edit', name: 'menu_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{uuid}/edit', name: 'menu_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Menu $menu, MenuManager $manager, MenuCache $cache): Response
     {
         $this->denyAccess([Permission::EDIT], $menu);
@@ -123,7 +137,7 @@ class MenuController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}/state', name: 'menu_change_state', methods: ['POST'])]
+    #[Route(path: '/{uuid}/state', name: 'menu_change_state', methods: ['POST'])]
     public function state(Request $request, Menu $menu, MenuManager $manager, MenuCache $cache): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $menu);
@@ -141,7 +155,7 @@ class MenuController extends WebAuthController
         return $this->redirectToRoute('menu_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route(path: '/{id}/delete', name: 'menu_delete', methods: ['POST'])]
+    #[Route(path: '/{uuid}/delete', name: 'menu_delete', methods: ['POST'])]
     public function delete(Request $request, Menu $menu, MenuManager $manager, MenuCache $cache): Response
     {
         $this->denyAccess([Permission::DELETE], $menu);

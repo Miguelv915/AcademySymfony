@@ -10,8 +10,7 @@ declare(strict_types=1);
 namespace Pidia\Apps\Demo\Twig;
 
 use CarlosChininin\App\Infrastructure\Security\Security;
-use Doctrine\ORM\EntityManagerInterface;
-use Pidia\Apps\Demo\Entity\Config;
+use Pidia\Apps\Demo\Repository\ConfigRepository;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -21,9 +20,9 @@ final class ConfigMenuRuntime implements RuntimeExtensionInterface
     private ?array $menus = null;
 
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private Security $security,
-        private UrlGeneratorInterface $router)
+        private readonly ConfigRepository $configRepository,
+        private readonly Security $security,
+        private readonly UrlGeneratorInterface $router)
     {
     }
 
@@ -36,7 +35,7 @@ final class ConfigMenuRuntime implements RuntimeExtensionInterface
     {
         if (null === $this->menus) {
             $configId = $this->security->user()?->config()?->getId();
-            $this->menus = $this->entityManager->getRepository(Config::class)->findMenusByConfigId($configId);
+            $this->menus = $this->configRepository->findMenusByConfigId($configId);
         }
 
         return $this->menus;
@@ -74,7 +73,7 @@ final class ConfigMenuRuntime implements RuntimeExtensionInterface
 
         try {
             $this->router->generate($routeName);
-        } catch (RouteNotFoundException $e) {
+        } catch (RouteNotFoundException) {
             return false;
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the PIDIA.
  * (c) Carlos Chininin <cio@pidia.pe>
@@ -7,8 +9,8 @@
 
 namespace Pidia\Apps\Demo\Entity;
 
-use CarlosChininin\App\Domain\Model\AttachedFile\AttachedFile;
 use CarlosChininin\App\Domain\Model\AuthUser\AuthUser;
+use CarlosChininin\AttachFile\Model\AttachFile;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -16,8 +18,10 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\Table;
 use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
 use Pidia\Apps\Demo\Repository\UsuarioRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -28,6 +32,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[Entity(repositoryClass: UsuarioRepository::class)]
+#[Table(name: 'core_usuario')]
 #[HasLifecycleCallbacks]
 class Usuario extends AuthUser
 {
@@ -35,7 +40,7 @@ class Usuario extends AuthUser
 
     #[Id]
     #[GeneratedValue]
-    #[Column(type: 'integer')]
+    #[Column(type: 'integer', options: ['unsigned' => true])]
     private ?int $id = null;
 
     #[Column(type: 'string', length: 50)]
@@ -53,13 +58,14 @@ class Usuario extends AuthUser
     private ?string $password;
 
     #[ManyToMany(targetEntity: UsuarioRol::class, inversedBy: 'users')]
+    #[JoinTable(name: 'core_usuario_usuario_rol_roles')]
     private Collection $usuarioRoles;
 
     #[Column(type: 'string', length: 100, nullable: true)]
     private ?string $fullName = null;
 
-    #[OneToOne(targetEntity: AttachedFile::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private ?AttachedFile $photo = null;
+    #[OneToOne(targetEntity: AttachFile::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ?AttachFile $photo = null;
 
     private ?string $passwordActual;
     private ?string $passwordNuevo;
@@ -67,6 +73,23 @@ class Usuario extends AuthUser
     public function __construct()
     {
         $this->usuarioRoles = new ArrayCollection();
+    }
+
+    public function __serialize(): array
+    {
+        // add $this->salt too if you don't use Bcrypt or Argon2i
+        return [$this->id, $this->username, $this->password];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        // add $this->salt too if you don't use Bcrypt or Argon2i
+        [$this->id, $this->username, $this->password] = $data;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getUsername();
     }
 
     public function getId(): ?int
@@ -111,18 +134,6 @@ class Usuario extends AuthUser
         $this->password = $password; // Generator::withoutWhiteSpaces($password);
 
         return $this;
-    }
-
-    public function __serialize(): array
-    {
-        // add $this->salt too if you don't use Bcrypt or Argon2i
-        return [$this->id, $this->username, $this->password];
-    }
-
-    public function __unserialize(array $data): void
-    {
-        // add $this->salt too if you don't use Bcrypt or Argon2i
-        [$this->id, $this->username, $this->password] = $data;
     }
 
     /**
@@ -218,22 +229,17 @@ class Usuario extends AuthUser
         return $this->getUsername();
     }
 
-    public function __toString(): string
-    {
-        return $this->getUsername();
-    }
-
     public function authRoles(): Collection|array
     {
         return $this->getUsuarioRoles();
     }
 
-    public function photo(): ?AttachedFile
+    public function photo(): ?AttachFile
     {
         return $this->photo;
     }
 
-    public function setPhoto(?AttachedFile $photo): void
+    public function setPhoto(?AttachFile $photo): void
     {
         $this->photo = $photo;
     }

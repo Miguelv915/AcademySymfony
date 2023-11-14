@@ -27,7 +27,7 @@
             <tr>
                 <th>Foto</th>
                 <td>
-                    <img src="{{ usuario.photo | attached_file_webpath }}"  alt="Photo"/>
+                    <img src="{{ usuario.photo.filePath }}"  alt="Photo" height="100"/>
                 </td>
             </tr>
         {% endif %}

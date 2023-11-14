@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\Table;
 use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
 
-#[Table(name: 'config')]
+#[Table(name: 'core_config')]
 #[Entity(repositoryClass: 'Pidia\Apps\Demo\Repository\ConfigRepository')]
 #[HasLifecycleCallbacks]
 class Config
@@ -28,17 +28,17 @@ class Config
 
     #[Id]
     #[GeneratedValue]
-    #[Column(type: 'integer')]
+    #[Column(type: 'integer', options: ['unsigned' => true])]
     private ?int $id = null;
 
     #[Column(type: 'string', length: 15)]
     private ?string $alias;
 
     #[Column(type: 'string', length: 255)]
-    private ?string $nombre;
+    private ?string $name;
 
     #[ManyToMany(targetEntity: ConfigMenu::class)]
-    #[JoinTable(name: 'config_config_menu_menus')]
+    #[JoinTable(name: 'core_config_config_menu_menus')]
     private Collection $menus;
 
     public function __construct()
@@ -63,14 +63,14 @@ class Config
         return $this;
     }
 
-    public function getNombre(): ?string
+    public function getName(): ?string
     {
-        return $this->nombre;
+        return $this->name;
     }
 
-    public function setNombre(string $nombre): self
+    public function setName(string $name): self
     {
-        $this->nombre = $nombre;
+        $this->name = $name;
 
         return $this;
     }

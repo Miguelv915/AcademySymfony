@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the PIDIA.
  * (c) Carlos Chininin <cio@pidia.pe>
@@ -23,7 +25,7 @@ class AppFixtures extends Fixture
     ) {
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $rol = new UsuarioRol();
         $rol->setName('Super Admin');
@@ -41,7 +43,7 @@ class AppFixtures extends Fixture
 
         $config = new Config();
         $config->setAlias('default');
-        $config->setNombre('Default company');
+        $config->setName('Default company');
         $config->setOwner($user);
         $data = [
             'config_index' => 'Configuración',

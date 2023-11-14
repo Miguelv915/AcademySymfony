@@ -55,10 +55,10 @@
                 <td>
                     <div class="float-end">
                         {% if access.has('show') %}
-                            {{ action.btn_show_link2_ico(path('usuario_show', {'id': usuario.id})) }}
+                            {{ action.btn_show_link2_ico(path('usuario_show', {'uuid': usuario.uuid})) }}
                         {% endif %}
                         {% if access.has('edit', usuario) %}
-                            {{ action.btn_edit_link2_ico(path('usuario_edit', {'id': usuario.id})) }}
+                            {{ action.btn_edit_link2_ico(path('usuario_edit', {'uuid': usuario.uuid})) }}
                         {% endif %}
                     </div>
                 </td>

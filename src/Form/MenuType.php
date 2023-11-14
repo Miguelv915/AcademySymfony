@@ -9,21 +9,21 @@ namespace Pidia\Apps\Demo\Form;
 
 use Pidia\Apps\Demo\Entity\Menu;
 use Pidia\Apps\Demo\Repository\ConfigRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
 
 class MenuType extends AbstractType
 {
     public function __construct(
-        private Security $security,
-        private ConfigRepository $configRepository
+        private readonly Security $security,
+        private readonly ConfigRepository $configRepository
     ) {
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $menuActual = $builder->getData();
         $builder
@@ -38,7 +38,7 @@ class MenuType extends AbstractType
             ->add('badge');
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Menu::class,

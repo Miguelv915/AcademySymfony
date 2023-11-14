@@ -14,10 +14,12 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
 use Pidia\Apps\Demo\Repository\MenuRepository;
 
 #[Entity(repositoryClass: MenuRepository::class)]
+#[Table(name: 'core_menu')]
 #[HasLifecycleCallbacks]
 class Menu extends AuthMenu
 {
@@ -25,7 +27,7 @@ class Menu extends AuthMenu
 
     #[Id]
     #[GeneratedValue]
-    #[Column(type: 'integer')]
+    #[Column(type: 'integer', options: ['unsigned' => true])]
     private ?int $id = null;
 
     #[Column(type: 'string', length: 50)]

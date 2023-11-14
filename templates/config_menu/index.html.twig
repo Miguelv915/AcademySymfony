@@ -40,10 +40,10 @@
                 <td class="d-none d-sm-table-cell">{{ config_menu.isActive | yesno_custom | raw }}</td>
                 <td>
                     {% if access.has('show') %}
-                        {{ action.btn_show_link2_ico(path('config_menu_show', {'id': config_menu.id})) }}
+                        {{ action.btn_show_link2_ico(path('config_menu_show', {'uuid': config_menu.uuid})) }}
                     {% endif %}
                     {% if access.has('edit', config_menu) %}
-                        {{ action.btn_edit_link2_ico(path('config_menu_edit', {'id': config_menu.id})) }}
+                        {{ action.btn_edit_link2_ico(path('config_menu_edit', {'uuid': config_menu.uuid})) }}
                     {% endif %}
                 </td>
             </tr>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the PIDIA.
  * (c) Carlos Chininin <cio@pidia.pe>
@@ -45,8 +47,7 @@ class UsuarioRepository extends BaseRepository
         $queryBuilder = $this->createQueryBuilder('usuario')
             ->select(['usuario', 'config', 'usuarioRoles'])
             ->leftJoin('usuario.config', 'config')
-            ->leftJoin('usuario.usuarioRoles', 'usuarioRoles')
-        ;
+            ->leftJoin('usuario.usuarioRoles', 'usuarioRoles');
 
         $this->security->filterQuery($queryBuilder, UsuarioController::BASE_ROUTE, $permissions);
 
@@ -64,7 +65,6 @@ class UsuarioRepository extends BaseRepository
         return $this->createQueryBuilder('usuario')
             ->select(['usuario', 'config', 'usuarioRoles'])
             ->leftJoin('usuario.config', 'config')
-            ->leftJoin('usuario.usuarioRoles', 'usuarioRoles')
-            ;
+            ->leftJoin('usuario.usuarioRoles', 'usuarioRoles');
     }
 }

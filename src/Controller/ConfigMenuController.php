@@ -81,7 +81,7 @@ final class ConfigMenuController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'config_menu_show', methods: ['GET'])]
+    #[Route(path: '/{uuid}', name: 'config_menu_show', methods: ['GET'])]
     public function show(ConfigMenu $configMenu): Response
     {
         $this->denyAccess([Permission::SHOW], $configMenu);
@@ -89,7 +89,7 @@ final class ConfigMenuController extends WebAuthController
         return $this->render('config_menu/show.html.twig', ['config_menu' => $configMenu]);
     }
 
-    #[Route(path: '/{id}/edit', name: 'config_menu_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{uuid}/edit', name: 'config_menu_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, ConfigMenu $configMenu, ConfigMenuManager $manager): Response
     {
         $this->denyAccess([Permission::EDIT], $configMenu);
@@ -115,7 +115,7 @@ final class ConfigMenuController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}/state', name: 'config_menu_change_state', methods: ['POST'])]
+    #[Route(path: '/{uuid}/state', name: 'config_menu_change_state', methods: ['POST'])]
     public function state(Request $request, ConfigMenu $configMenu, ConfigMenuManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $configMenu);
@@ -132,7 +132,7 @@ final class ConfigMenuController extends WebAuthController
         return $this->redirectToRoute('config_menu_index');
     }
 
-    #[Route(path: '/{id}/delete', name: 'config_menu_delete', methods: ['POST'])]
+    #[Route(path: '/{uuid}/delete', name: 'config_menu_delete', methods: ['POST'])]
     public function delete(Request $request, ConfigMenu $configMenu, ConfigMenuManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $configMenu);

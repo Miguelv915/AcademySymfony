@@ -55,7 +55,7 @@
                     <!--begin::Symbol-->
                     <div class="symbol symbol-50px">
                         {% if app.user and app.user.photo %}
-                            <img src="{{ asset(app.user.photo | attached_file_webpath) | imagine_filter('mini') }}" alt="" />
+                            <img src="{{ asset(app.user.photo.filePath) | imagine_filter('mini') }}" alt="Photo" />
                         {% else %}
                             <img src="{{ asset(_theme ~ 'media/avatars/blank.png') }}" alt="" />
                         {% endif %}

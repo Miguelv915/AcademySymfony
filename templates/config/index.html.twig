@@ -28,7 +28,7 @@
         {{ table.tbody_start() }}
         {% for config in paginator.results %}
             <tr>
-                <td>{{ config.nombre }}</td>
+                <td>{{ config.name }}</td>
                 <td>{{ config.alias }}</td>
                 <td>
                     {% for menu in config.menus %}
@@ -38,10 +38,10 @@
                 <td class="text-center">{{ config.isActive | yesno_custom | raw }}</td>
                 <td>
                     {% if access.has('show') %}
-                        {{ action.btn_show_link2_ico(path('config_show', {'id': config.id})) }}
+                        {{ action.btn_show_link2_ico(path('config_show', {'uuid': config.uuid})) }}
                     {% endif %}
                     {% if access.has('edit', config) %}
-                        {{ action.btn_edit_link2_ico(path('config_edit', {'id': config.id})) }}
+                        {{ action.btn_edit_link2_ico(path('config_edit', {'uuid': config.uuid})) }}
                     {% endif %}
                 </td>
             </tr>

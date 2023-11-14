@@ -2,16 +2,21 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace Pidia\Apps\Demo\Security;
 
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class PasswordSecurity
+final readonly class PasswordSecurity
 {
-    public function __construct(private PasswordHasherFactoryInterface $encoder, UserPasswordHasherInterface $hasher)
-    {
+    public function __construct(
+        private PasswordHasherFactoryInterface $encoder,
+    ) {
     }
 
     public function encrypt(UserInterface|string $user, string $password): string

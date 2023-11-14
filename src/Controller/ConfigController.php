@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the PIDIA.
  * (c) Carlos Chininin <cio@pidia.pe>
@@ -42,13 +44,25 @@ final class ConfigController extends WebAuthController
     {
         $this->denyAccess([Permission::EXPORT]);
         $headers = [
-            'nombre' => 'Nombre',
-            'alias' => 'Alias',
-            'menus.name' => 'Menu',
-            'isActive' => 'Activo',
+            'Nombre',
+            'Alias',
+            'Menu',
+            'Activo',
         ];
 
-        $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
+        /** @var Config[] $configs */
+        $configs = $manager->dataExport(ParamFetcher::fromRequestQuery($request));
+        $items = [];
+        foreach ($configs as &$config) {
+            $item = [];
+            $item[] = $config->getName();
+            $item[] = $config->getAlias();
+            $item[] = implode(', ', $config->getMenus()->toArray());
+            $item[] = $config->isActive();
+
+            $items[] = $item;
+            unset($item, $config);
+        }
 
         return $manager->export($items, $headers, 'export_config');
     }
@@ -79,7 +93,7 @@ final class ConfigController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'config_show', methods: ['GET'])]
+    #[Route(path: '/{uuid}', name: 'config_show', methods: ['GET'])]
     public function show(Config $config): Response
     {
         $this->denyAccess([Permission::SHOW], $config);
@@ -87,7 +101,7 @@ final class ConfigController extends WebAuthController
         return $this->render('config/show.html.twig', ['config' => $config]);
     }
 
-    #[Route(path: '/{id}/edit', name: 'config_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{uuid}/edit', name: 'config_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Config $config, ConfigManager $manager): Response
     {
         $this->denyAccess([Permission::EDIT], $config);
@@ -113,7 +127,7 @@ final class ConfigController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}/state', name: 'config_change_state', methods: ['POST'])]
+    #[Route(path: '/{uuid}/state', name: 'config_change_state', methods: ['POST'])]
     public function state(Request $request, Config $config, ConfigManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $config);
@@ -130,7 +144,7 @@ final class ConfigController extends WebAuthController
         return $this->redirectToRoute('config_index');
     }
 
-    #[Route(path: '/{id}/delete', name: 'config_delete', methods: ['POST'])]
+    #[Route(path: '/{uuid}/delete', name: 'config_delete', methods: ['POST'])]
     public function delete(Request $request, Config $config, ConfigManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $config);

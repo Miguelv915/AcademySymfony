@@ -44,12 +44,23 @@ class ParametroController extends WebAuthController
         $this->denyAccess([Permission::EXPORT]);
 
         $headers = [
-            'name' => 'Nombre',
-            'alias' => 'Alias',
-            'isActive' => 'Activo',
+            'Nombre',
+            'Alias',
+            'Activo',
         ];
 
-        $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
+        /** @var Parametro[] $parametros */
+        $parametros = $manager->dataExport(ParamFetcher::fromRequestQuery($request));
+        $items = [];
+        foreach ($parametros as &$parametro) {
+            $item = [];
+            $item[] = $parametro->getName();
+            $item[] = $parametro->getAlias();
+            $item[] = $parametro->isActive();
+
+            $items[] = $item;
+            unset($item, $parametro);
+        }
 
         return $manager->export($items, $headers, 'parametro');
     }
@@ -81,7 +92,7 @@ class ParametroController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'parametro_show', methods: ['GET'])]
+    #[Route(path: '/{uuid}', name: 'parametro_show', methods: ['GET'])]
     public function show(Parametro $parametro): Response
     {
         $this->denyAccess([Permission::SHOW], $parametro);
@@ -89,7 +100,7 @@ class ParametroController extends WebAuthController
         return $this->render('parametro/show.html.twig', ['parametro' => $parametro]);
     }
 
-    #[Route(path: '/{id}/edit', name: 'parametro_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{uuid}/edit', name: 'parametro_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Parametro $parametro, ParametroManager $manager): Response
     {
         $this->denyAccess([Permission::EDIT], $parametro);
@@ -115,7 +126,7 @@ class ParametroController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}/state', name: 'parametro_change_state', methods: ['POST'])]
+    #[Route(path: '/{uuid}/state', name: 'parametro_change_state', methods: ['POST'])]
     public function state(Request $request, Parametro $parametro, ParametroManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $parametro);
@@ -132,7 +143,7 @@ class ParametroController extends WebAuthController
         return $this->redirectToRoute('parametro_index');
     }
 
-    #[Route(path: '/{id}/delete', name: 'parametro_delete', methods: ['POST'])]
+    #[Route(path: '/{uuid}/delete', name: 'parametro_delete', methods: ['POST'])]
     public function delete(Request $request, Parametro $parametro, ParametroManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $parametro);

@@ -7,6 +7,7 @@
 
 namespace Pidia\Apps\Demo\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -14,11 +15,12 @@ use Doctrine\ORM\Mapping\Id;
 use Pidia\Apps\Demo\Repository\ConfigMenuRepository;
 
 #[Entity(repositoryClass: ConfigMenuRepository::class)]
+#[ORM\Table(name: 'core_config_menu')]
 class ConfigMenu
 {
     #[Id]
     #[GeneratedValue]
-    #[Column(type: 'integer')]
+    #[Column(type: 'integer', options: ['unsigned' => true])]
     private ?int $id = null;
 
     #[Column(type: 'string', length: 50)]

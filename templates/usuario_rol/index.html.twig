@@ -52,10 +52,10 @@
                 <td class="d-none d-sm-table-cell">{{ usuario_rol.isActive | yesno_custom | raw }}</td>
                 <td>
                     {% if access.has('show', usuario_rol) %}
-                        {{ action.btn_show_link2_ico(path('usuario_rol_show', {'id': usuario_rol.id})) }}
+                        {{ action.btn_show_link2_ico(path('usuario_rol_show', {'uuid': usuario_rol.uuid})) }}
                     {% endif %}
                     {% if access.has('edit', usuario_rol) %}
-                        {{ action.btn_edit_link2_ico(path('usuario_rol_edit', {'id': usuario_rol.id})) }}
+                        {{ action.btn_edit_link2_ico(path('usuario_rol_edit', {'uuid': usuario_rol.uuid})) }}
                     {% endif %}
                 </td>
             </tr>

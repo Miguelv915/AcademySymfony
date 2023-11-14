@@ -46,12 +46,23 @@ class UsuarioRolController extends WebAuthController
         $this->denyAccess([Permission::EXPORT]);
 
         $headers = [
-            'nombre' => 'Nombre',
-            'rol' => 'Alias',
-            'isActive' => 'Activo',
+            'Nombre',
+            'Alias',
+            'Activo',
         ];
 
-        $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
+        /** @var UsuarioRol[] $roles */
+        $roles = $manager->dataExport(ParamFetcher::fromRequestQuery($request));
+        $items = [];
+        foreach ($roles as &$rol) {
+            $item = [];
+            $item[] = $rol->getName();
+            $item[] = $rol->getRol();
+            $item[] = $rol->isActive();
+
+            $items[] = $item;
+            unset($item, $rol);
+        }
 
         return $manager->export($items, $headers, 'usuario_rol');
     }
@@ -84,7 +95,7 @@ class UsuarioRolController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'usuario_rol_show', methods: ['GET'])]
+    #[Route(path: '/{uuid}', name: 'usuario_rol_show', methods: ['GET'])]
     public function show(UsuarioRol $rol): Response
     {
         $this->denyAccess([Permission::SHOW], $rol);
@@ -92,7 +103,7 @@ class UsuarioRolController extends WebAuthController
         return $this->render('usuario_rol/show.html.twig', ['usuario_rol' => $rol]);
     }
 
-    #[Route(path: '/{id}/edit', name: 'usuario_rol_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{uuid}/edit', name: 'usuario_rol_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, UsuarioRol $rol, UsuarioRolManager $manager, MenuCache $menuCache, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccess([Permission::EDIT], $rol);
@@ -119,7 +130,7 @@ class UsuarioRolController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}/state', name: 'usuario_rol_change_state', methods: ['POST'])]
+    #[Route(path: '/{uuid}/state', name: 'usuario_rol_change_state', methods: ['POST'])]
     public function state(Request $request, UsuarioRol $rol, UsuarioRolManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $rol);
@@ -136,7 +147,7 @@ class UsuarioRolController extends WebAuthController
         return $this->redirectToRoute('usuario_rol_index');
     }
 
-    #[Route(path: '/{id}/delete', name: 'usuario_rol_delete', methods: ['POST'])]
+    #[Route(path: '/{uuid}/delete', name: 'usuario_rol_delete', methods: ['POST'])]
     public function delete(Request $request, UsuarioRol $rol, UsuarioRolManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $rol);

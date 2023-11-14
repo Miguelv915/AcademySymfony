@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the PIDIA.
  * (c) Carlos Chininin <cio@pidia.pe>
@@ -7,8 +9,7 @@
 
 namespace Pidia\Apps\Demo\Entity\Traits;
 
-use DateTime;
-use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
@@ -16,40 +17,35 @@ use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
 use Pidia\Apps\Demo\Entity\Config;
 use Pidia\Apps\Demo\Entity\Usuario;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Uid\Ulid;
 
 trait EntityTrait
 {
-    #[Column(name: 'created_at', type: 'datetime')]
-    protected ?DateTimeInterface $createdAt = null;
+    #[Column(type: UlidType::NAME, unique: true)]
+    protected ?Ulid $uuid;
 
-    #[Column(name: 'updated_at', type: 'datetime')]
-    protected ?DateTimeInterface $updatedAt = null;
     #[ManyToOne(targetEntity: Usuario::class)]
     #[JoinColumn(nullable: true)]
-    private ?Usuario $owner = null;
+    protected ?Usuario $owner = null;
 
     #[ManyToOne(targetEntity: Config::class)]
     #[JoinColumn(nullable: true)]
-    private ?Config $config = null;
+    protected ?Config $config = null;
+
+    #[Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $createdAt = null;
+
+    #[Column(name: 'updated_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $updatedAt = null;
 
     #[Column(type: 'boolean')]
-    #[Groups(groups: 'default')]
-    private bool $isActive;
-
-    #[Column(type: 'uuid', unique: true)]
-    private ?Uuid $uuid = null;
+    protected bool $isActive = true;
 
     public function isActive(): bool
     {
         return $this->isActive;
-    }
-
-    public function setIsActive(bool $isActive): void
-    {
-        $this->isActive = $isActive;
     }
 
     public function changeActive(): bool
@@ -60,12 +56,12 @@ trait EntityTrait
         return $state;
     }
 
-    public function createdAt(): DateTimeInterface
+    public function createdAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function updatedAt(): DateTimeInterface
+    public function updatedAt(): \DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -85,7 +81,7 @@ trait EntityTrait
         return $this;
     }
 
-    public function uuid(): ?Uuid
+    public function uuid(): ?Ulid
     {
         return $this->uuid;
     }
@@ -105,16 +101,15 @@ trait EntityTrait
     #[PrePersist]
     public function init(): void
     {
-        $this->uuid = Uuid::v4();
-        $this->isActive = true;
+        $this->uuid = new Ulid();
     }
 
     #[PrePersist, PreUpdate]
     public function updatedDatetime(): void
     {
-        $this->updatedAt = new DateTime();
+        $this->updatedAt = new \DateTime();
         if (null === $this->createdAt) {
-            $this->createdAt = new DateTime();
+            $this->createdAt = new \DateTime();
         }
     }
 }

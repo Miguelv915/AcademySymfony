@@ -7,14 +7,14 @@
     {{ action.btn_new_link_ico(path(route_base ~ '_new')) }}
 {% endif %}
 {% if access.edit %}
-    {{ action.btn_edit_link_ico(path(route_base ~ '_edit', {'id': entity.id})) }}
+    {{ action.btn_edit_link_ico(path(route_base ~ '_edit', {'uuid': entity.uuid})) }}
 {% endif %}
 {% if access.delete and entity.isActive == true %}
-    {{ action.btn_delete_form_ico(path(route_base ~ '_change_state', {'id': entity.id}), csrf_token('change_state' ~ entity.id)) }}
+    {{ action.btn_delete_form_ico(path(route_base ~ '_change_state', {'uuid': entity.uuid}), csrf_token('change_state' ~ entity.id)) }}
 {% endif %}
 {% if access.delete and entity.isActive == false %}
-    {{ action.btn_restore_form_ico(path(route_base ~ '_change_state', {'id': entity.id}), csrf_token('change_state' ~ entity.id)) }}
+    {{ action.btn_restore_form_ico(path(route_base ~ '_change_state', {'uuid': entity.uuid}), csrf_token('change_state' ~ entity.id)) }}
 {% endif %}
 {% if access.master %}
-    {{ action.btn_delete_forever_form_ico(path(route_base ~ '_delete', {'id': entity.id}), csrf_token('delete_forever' ~ entity.id)) }}
+    {{ action.btn_delete_forever_form_ico(path(route_base ~ '_delete', {'uuid': entity.uuid}), csrf_token('delete_forever' ~ entity.id)) }}
 {% endif %}

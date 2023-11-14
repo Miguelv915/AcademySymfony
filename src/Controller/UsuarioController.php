@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the PIDIA.
  * (c) Carlos Chininin <cio@pidia.pe>
@@ -11,7 +13,6 @@ use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Pidia\Apps\Demo\Entity\Usuario;
 use Pidia\Apps\Demo\Form\UsuarioType;
 use Pidia\Apps\Demo\Manager\UsuarioManager;
@@ -45,16 +46,29 @@ final class UsuarioController extends WebAuthController
         $this->denyAccess([Permission::EXPORT]);
 
         $headers = [
-            'username' => 'Usuario',
-            'fullName' => 'Nombres',
-            'email' => 'Correo',
-            'usuarioRoles.name' => 'Roles',
-            'isActive' => 'Activo',
+            'Usuario',
+            'Nombres',
+            'Correo',
+            'Roles',
+            'Activo',
         ];
 
-        $usuarios = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
+        /** @var Usuario[] $usuarios */
+        $usuarios = $manager->dataExport(ParamFetcher::fromRequestQuery($request));
+        $items = [];
+        foreach ($usuarios as &$usuario) {
+            $item = [];
+            $item[] = $usuario->getUsername();
+            $item[] = $usuario->getFullName();
+            $item[] = $usuario->getEmail();
+            $item[] = implode(', ', $usuario->getUsuarioRoles()->toArray());
+            $item[] = $usuario->isActive();
 
-        return $manager->export($usuarios, $headers, 'usuario');
+            $items[] = $item;
+            unset($item, $usuario);
+        }
+
+        return $manager->export($items, $headers, 'usuario');
     }
 
     #[Route(path: '/new', name: 'usuario_new', methods: 'GET|POST')]
@@ -75,7 +89,7 @@ final class UsuarioController extends WebAuthController
                 return $this->redirectToRoute('usuario_index');
             } catch (DuplicateKeyException) {
                 $this->addFlash('danger', 'Existe un email o usuario repetido');
-            } catch (Exception) {
+            } catch (\Exception) {
                 $this->addFlash('danger', 'Se ha producido un error');
             }
         }
@@ -86,7 +100,7 @@ final class UsuarioController extends WebAuthController
         ]);
     }
 
-    #[Route(path: '/{id}', name: 'usuario_show', methods: 'GET')]
+    #[Route(path: '/{uuid}', name: 'usuario_show', methods: 'GET')]
     public function show(Usuario $usuario): Response
     {
         $this->denyAccess([Permission::SHOW], $usuario);
@@ -94,7 +108,7 @@ final class UsuarioController extends WebAuthController
         return $this->render('usuario/show.html.twig', ['usuario' => $usuario]);
     }
 
-    #[Route(path: '/{id}/edit', name: 'usuario_edit', methods: 'GET|POST')]
+    #[Route(path: '/{uuid}/edit', name: 'usuario_edit', methods: 'GET|POST')]
     public function edit(
         Request $request,
         Usuario $usuario,
@@ -124,7 +138,7 @@ final class UsuarioController extends WebAuthController
         ]);
     }
 
-    #[Route(path: '/{id}/state', name: 'usuario_change_state', methods: 'POST')]
+    #[Route(path: '/{uuid}/state', name: 'usuario_change_state', methods: 'POST')]
     public function state(Request $request, Usuario $usuario, UsuarioManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $usuario);
@@ -141,7 +155,7 @@ final class UsuarioController extends WebAuthController
         return $this->redirectToRoute('usuario_index');
     }
 
-    #[Route(path: '/{id}/delete', name: 'usuario_delete', methods: ['POST'])]
+    #[Route(path: '/{uuid}/delete', name: 'usuario_delete', methods: ['POST'])]
     public function deleteForever(Request $request, Usuario $usuario, UsuarioManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $usuario);
@@ -156,7 +170,7 @@ final class UsuarioController extends WebAuthController
         return $this->redirectToRoute('usuario_index');
     }
 
-    #[Route(path: '/{id}/profile', name: 'usuario_profile', methods: 'GET')]
+    #[Route(path: '/{uuid}/profile', name: 'usuario_profile', methods: 'GET')]
     public function profile(Usuario $usuario): Response
     {
         $this->denyAccess([Permission::SHOW], $usuario);
