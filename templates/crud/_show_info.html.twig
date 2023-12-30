@@ -1,7 +1,7 @@
 {% import '@App/theme1/table.html.twig' as table %}
 
 {{ table.tbl_tr('Activo'| gtrans,entity.isActive | yesno_custom) }}
-{% if access.master %}
+{% if is_granted('ROLE_SUPER_ADMIN') %}
     {{ table.tbl_tr('Propietario'| gtrans,entity.owner) }}
     {{ table.tbl_tr('Creado'| gtrans,entity.createdAt | fecha_hora_larga) }}
     {{ table.tbl_tr('Actualizado'| gtrans,entity.updatedAt | fecha_hora_larga) }}

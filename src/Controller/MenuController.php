@@ -18,7 +18,7 @@ use Pidia\Apps\Demo\Manager\MenuManager;
 use Pidia\Apps\Demo\Repository\MenuRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/admin/menu')]
 class MenuController extends WebAuthController

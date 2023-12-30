@@ -70,6 +70,7 @@ class UsuarioType extends AbstractType
             $builder->add('config', EntityType::class, [
                 'class' => Config::class,
                 'required' => false,
+                'placeholder' => 'Seleccione ...',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('config')
                         ->where('config.isActive = TRUE')

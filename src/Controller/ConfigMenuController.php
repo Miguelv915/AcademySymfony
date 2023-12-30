@@ -15,7 +15,7 @@ use Pidia\Apps\Demo\Form\ConfigMenuType;
 use Pidia\Apps\Demo\Manager\ConfigMenuManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/admin/config_menu')]
 final class ConfigMenuController extends WebAuthController

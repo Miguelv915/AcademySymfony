@@ -17,7 +17,7 @@ use Pidia\Apps\Demo\Form\ConfigType;
 use Pidia\Apps\Demo\Manager\ConfigManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/admin/config')]
 final class ConfigController extends WebAuthController

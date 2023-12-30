@@ -11,7 +11,7 @@ namespace Pidia\Apps\Demo\Controller;
 
 use CarlosChininin\App\Infrastructure\Controller\WebController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class DefaultController extends WebController
 {

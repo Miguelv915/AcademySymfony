@@ -17,7 +17,7 @@ use Pidia\Apps\Demo\Form\UsuarioRolType;
 use Pidia\Apps\Demo\Manager\UsuarioRolManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/admin/usuario_rol')]
 class UsuarioRolController extends WebAuthController
