@@ -1,5 +1,5 @@
 {#{% set _theme = 'theme/assets/' %}#}
-{% set _theme = 'https://cdn.sisprocoffee.com/metronic/v8.1/8/' %}
+{% set _theme = 'https://cdn.sisprocoffee.com/metronic/v8.2/8/' %}
 {% set _title = _title | default('Sistema') %}
 {% set _main_title = _main_title | default(null) %}
 {% set _section = _section | default(app.request.attributes.get('_route')) %}
@@ -10,14 +10,14 @@
 <head><base href=""/>
     <title>Pidia | {{ _title }}</title>
     <meta charset="utf-8" />
-    <meta name="description" content="Sispro Banano." />
-    <meta name="keywords" content="sispro, banano, " />
+    <meta name="description" content="Pidia Sistema." />
+    <meta name="keywords" content="pidia, sistema, " />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Sispro" />
+    <meta property="og:title" content="Pidia" />
     <meta property="og:url" content="https:/pidia.pe" />
-    <meta property="og:site_name" content="Sispro | Pidia" />
+    <meta property="og:site_name" content="Pidia | Sistema" />
     <link rel="canonical" href="https://pidia.pe" />
     <link rel="shortcut icon" href="{{ asset(_theme ~ 'media/logos/favicon.ico') }}" />
     <!--begin::Fonts(mandatory for all pages)-->
@@ -467,22 +467,11 @@
 <!--end::Javascript-->
 <script>
     $(document).ready(function () {
-        {% for label, messages in app.flashes %}
-        {% for message in messages %}
-        {% if label == 'info' %}
-        Notify.info("{{ message | filter_text }}");
-        {% endif %}
-        {% if label == 'success' %}
-        Notify.success("{{ message | filter_text }}");
-        {% endif %}
-        {% if label == 'warning' %}
-        Notify.warning("{{ message | filter_text }}");
-        {% endif %}
-        {% if label == 'danger' %}
-        Notify.danger("{{ message | filter_text }}");
-        {% endif %}
-        {% endfor %}
-        {% endfor %}
+        {%- for label, messages in app.flashes -%}
+            {%- for message in messages -%}
+                Notify.{{ label }}("{{ message | filter_text }}");
+            {%- endfor -%}
+        {%- endfor -%}
     });
 </script>
 </body>

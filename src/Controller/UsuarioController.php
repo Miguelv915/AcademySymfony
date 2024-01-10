@@ -128,6 +128,7 @@ final class UsuarioController extends WebAuthController
             }
 
             $entityManager->flush();
+            $this->addFlash('success', 'Registro actualizado');
 
             return $this->redirectToRoute('usuario_index', ['id' => $usuario->getId()]);
         }

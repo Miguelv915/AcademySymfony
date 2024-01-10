@@ -34,7 +34,7 @@ class UsuarioRolType extends AbstractType
             ->add('name')
             ->add('permissions', CollectionFormType::class, [
                 'required' => false,
-                'label' => 'Permisoss',
+                'label' => 'Permisos',
                 'entry_type' => MenuPermissionType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
