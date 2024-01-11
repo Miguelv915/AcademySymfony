@@ -18,6 +18,8 @@
 
     {{ frm.row(form.permissions) }}
 
-    {{ frm.button(button_label|default('Guardar')) }}
+    <div class="mt-4">
+        {{ frm.button(button_label|default('Guardar')) }}
+    </div>
 
 {{ form_end(form) }}

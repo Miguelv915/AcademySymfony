@@ -1,0 +1,52 @@
+{% use 'bootstrap_5_layout.html.twig' %}
+
+{%- block form_label -%}
+    {% set compound = false %}
+    {{- parent() -}}
+{%- endblock form_label -%}
+
+{%- block form_row -%}
+    {%- set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' form-floating mb-5')|trim}) -%}
+    {{- parent() -}}
+{%- endblock form_row -%}
+
+{%- block form_widget_simple -%}
+    {% if attr.placeholder is not defined %}
+        {%- set attr = attr|merge({placeholder: label|default(name|humanize)}) -%}
+    {% endif %}
+    {{- parent() -}}
+{%- endblock form_widget_simple -%}
+
+{%- block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ 'js-select2')|trim}) -%}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed -%}
+
+{% block attachfile_row -%}
+    <div class="form-floating mb-5">
+        {{- form_widget(form.file) -}}
+        {{- form_label(form) -}}
+    </div>
+{% endblock %}
+
+{% block collections_row -%}
+    <div class="form-floating mb-5">
+        <label class="{% if required %}required{% endif %}">
+            {{ label ?? name|humanize }}
+        </label>
+        <div class="">
+            <ul id="{{ id }}"
+                class="list-group" data-prototype="{{ form_widget(prototype)|e('html_attr') }}"
+                    {% if prototype.vars.name %} data-prototype-name="{{ prototype.vars.name | e }}" {% endif %}
+                data-widget-tags="{{ '<li class="list-group-item pe-sm-12 collection-item"></li>'|e }}"
+            >
+                {%- for child in form %}
+                    <li class="list-group-item pe-sm-12 collection-item" style="position: relative;">
+                        {{- form_errors(child) -}}
+                        {{- form_widget(child) -}}
+                    </li>
+                {% endfor -%}
+            </ul>
+        </div>
+    </div>
+{%- endblock collections_row %}
