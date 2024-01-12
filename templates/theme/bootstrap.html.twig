@@ -44,3 +44,13 @@
         {% endfor -%}
     </div>
 {%- endblock choice_widget_expanded %}
+
+{% block date_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' js-flatpickr')|trim}) -%}
+    {{- parent() -}}
+{% endblock %}
+
+{% block datetime_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' js-flatpickr')|trim}) -%}
+    {{- parent() -}}
+{% endblock %}

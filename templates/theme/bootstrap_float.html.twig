@@ -50,3 +50,13 @@
         </div>
     </div>
 {%- endblock collections_row %}
+
+{% block date_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' js-flatpickr')|trim}) -%}
+    {{- parent() -}}
+{% endblock %}
+
+{% block datetime_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' js-flatpickr')|trim}) -%}
+    {{- parent() -}}
+{% endblock %}

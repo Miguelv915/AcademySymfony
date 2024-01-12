@@ -51,18 +51,22 @@ let Flatpickr = function () {
     };
 
     // Init Flatpickr (with .js-flatpickr class)
-    jQuery('.js-flatpickr:not(.js-flatpickr-enabled)').each((index, element) => {
-        let el = jQuery(element);
+    $('.js-flatpickr:not(.js-flatpickr-enabled)').each((index, element) => {
+        let el = $(element);
 
         // Add .js-flatpickr-enabled class to tag it as activated
         el.addClass('js-flatpickr-enabled');
 
         // Init it
         flatpickr(el, {
-            locale: 'es',
+            locale: Spanish,
             dateFormat: "Y-m-d",
             altInput: true,
             altFormat: 'd/m/Y',
         });
     });
 }
+
+$(document).ready(function() {
+    Flatpickr();
+});

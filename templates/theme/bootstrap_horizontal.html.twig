@@ -15,7 +15,7 @@
 {%- endblock form_group_class %}
 
 {% block form_widget_simple -%}
-    {%- set attr = attr|merge({class: (attr.class|default('') ~ 'form-control-solid')|trim}) -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control-solid')|trim}) -%}
     {{- parent() -}}
 {% endblock form_widget_simple -%}
 
@@ -58,3 +58,13 @@
         {% endfor -%}
     </div>
 {%- endblock choice_widget_expanded %}
+
+{% block date_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' js-flatpickr')|trim}) -%}
+    {{- parent() -}}
+{% endblock %}
+
+{% block datetime_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' js-flatpickr')|trim}) -%}
+    {{- parent() -}}
+{% endblock %}
