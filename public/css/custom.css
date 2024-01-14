@@ -2,3 +2,11 @@
 [data-bs-theme="dark"] .list-group-item {
     background-color: var(--bs-dark-light);
 }
+
+[data-bs-theme="dark"] .text-dark {
+    color: var(--bs-text-gray-800) !important;
+}
+
+[data-bs-theme="dark"] .btn.btn-light-dark, .btn.btn-light-dark .svg-icon, .btn.btn-light-dark i {
+    color: var(--bs-text-gray-600);
+}
