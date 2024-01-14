@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4636d1860190f6d69eb8bd3895e1b0e6",
+    "content-hash": "f4fb137cfc3baa8a8fd4e4757044adfe",
     "packages": [
         {
             "name": "carloschininin/app",
@@ -1678,12 +1678,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "c30119bad55b44d8e73cf8fec4800bc8aa55fdde"
+                "reference": "65613e842f382198183ccdaa4b6e4939aeb63a5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/c30119bad55b44d8e73cf8fec4800bc8aa55fdde",
-                "reference": "c30119bad55b44d8e73cf8fec4800bc8aa55fdde",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/65613e842f382198183ccdaa4b6e4939aeb63a5c",
+                "reference": "65613e842f382198183ccdaa4b6e4939aeb63a5c",
                 "shasum": ""
             },
             "require": {
@@ -1764,7 +1764,7 @@
                 "issues": "https://github.com/liip/LiipImagineBundle/issues",
                 "source": "https://github.com/liip/LiipImagineBundle/tree/3.x"
             },
-            "time": "2024-01-06T10:04:19+00:00"
+            "time": "2024-01-12T10:16:11+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -7060,6 +7060,74 @@
                 }
             ],
             "time": "2023-12-10T16:54:46+00:00"
+        },
+        {
+            "name": "symfony/telegram-notifier",
+            "version": "v7.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/telegram-notifier.git",
+                "reference": "4392b29ce2c02f834970dfee0d0abdb57de1e534"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/telegram-notifier/zipball/4392b29ce2c02f834970dfee0d0abdb57de1e534",
+                "reference": "4392b29ce2c02f834970dfee0d0abdb57de1e534",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "symfony/http-client": "^6.4|^7.0",
+                "symfony/mime": "^6.4|^7.0",
+                "symfony/notifier": "^6.4|^7.0"
+            },
+            "type": "symfony-notifier-bridge",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Notifier\\Bridge\\Telegram\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Telegram Notifier Bridge",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "notifier",
+                "telegram"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/telegram-notifier/tree/v7.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-10-17T13:48:31+00:00"
         },
         {
             "name": "symfony/translation",
