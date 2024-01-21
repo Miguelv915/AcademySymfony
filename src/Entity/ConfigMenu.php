@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Pidia\Apps\Demo\Repository\ConfigMenuRepository;
+use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
 
 #[Entity(repositoryClass: ConfigMenuRepository::class)]
 #[ORM\Table(name: 'core_config_menu')]
@@ -30,11 +32,14 @@ class ConfigMenu
     private ?string $route;
 
     #[Column(type: 'boolean')]
-    private bool $isActive;
+    private bool $isActive = true;
+
+    #[Column(type: UlidType::NAME)]
+    private ?Ulid $uuid;
 
     public function __construct()
     {
-        $this->isActive = true;
+        $this->uuid = new Ulid();
     }
 
     public function getId(): ?int
@@ -79,6 +84,11 @@ class ConfigMenu
     public function changeActive(): void
     {
         $this->isActive = !$this->isActive();
+    }
+
+    public function uuid(): ?Ulid
+    {
+        return $this->uuid;
     }
 
     public function __toString(): string

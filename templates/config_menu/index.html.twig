@@ -14,47 +14,53 @@
 
 {% block _main %}
     {{ pagination.pager(paginator, _section) }}
-    <div class="table-responsive">
-        {{ table.tbl_start('table-sm') }}
-        {{ table.thead_start() }}
-        <tr>
-            {{ table.th('#', false, 'text-center') }}
-            {{ table.th('Datos', false, 'd-block d-sm-none') }}
-            {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
-            {{ table.th('Ruta', true, 'd-none d-sm-table-cell') }}
-            {{ table.th('Activo', true, 'text-center d-none d-sm-table-cell') }}
-            <th></th>
-        </tr>
-        {{ table.thead_end() }}
-        {{ table.tbody_start() }}
-        {% for config_menu in paginator.results %}
+    {% embed 'theme/_table.html.twig' %}
+        {% block table_head %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
             <tr>
-                <td class="text-center">{{ loop.index | index(paginator) }}</td>
-                <td class="d-block d-sm-none font-size-xs">
-                    {{ config_menu.name }}<br>
-                    {{ config_menu.route }}<br>
-                    {{ config_menu.isActive | yesno_custom | raw }}
-                </td>
-                <td class="d-none d-sm-table-cell">{{ config_menu.name}}</td>
-                <td class="d-none d-sm-table-cell">{{ config_menu.route }}</td>
-                <td class="d-none d-sm-table-cell">{{ config_menu.isActive | yesno_custom | raw }}</td>
-                <td>
-                    {% if access.has('show') %}
-                        {{ action.btn_show_link2_ico(path('config_menu_show', {'uuid': config_menu.uuid})) }}
-                    {% endif %}
-                    {% if access.has('edit', config_menu) %}
-                        {{ action.btn_edit_link2_ico(path('config_menu_edit', {'uuid': config_menu.uuid})) }}
-                    {% endif %}
-                </td>
+                {{ table.th('#', false, 'text-center') }}
+                {{ table.th('Datos', false, 'd-block d-sm-none') }}
+                {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Ruta', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Activo', true, 'text-center d-none d-sm-table-cell') }}
+                <th></th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">No hay registros</td>
-            </tr>
-        {% endfor %}
-        {{ table.tbody_end() }}
-        {{ table.tbl_end() }}
-    </div>
+        {% endblock %}
+        {% block table_body %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            {% for config_menu in paginator.results %}
+                <tr>
+                    <td class="text-center">{{ loop.index | index(paginator) }}</td>
+                    <td class="d-block d-sm-none font-size-xs">
+                        {{ config_menu.name }}<br>
+                        {{ config_menu.route }}<br>
+                        {{ config_menu.isActive | yesno_custom | raw }}
+                    </td>
+                    <td class="d-none d-sm-table-cell">{{ config_menu.name}}</td>
+                    <td class="d-none d-sm-table-cell">{{ config_menu.route }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ config_menu.isActive | yesno_custom | raw }}</td>
+                    <td class="">
+                        <div class="float-end">
+                            {% if access.has('show') %}
+                                {{ action.btn_show_link2_ico(path('config_menu_show', {'uuid': config_menu.uuid})) }}
+                            {% endif %}
+                            {% if access.has('edit', config_menu) %}
+                                {{ action.btn_edit_link2_ico(path('config_menu_edit', {'uuid': config_menu.uuid})) }}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No hay registros</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+
     {{ pagination.show(paginator, _section) }}
 {% endblock %}
 
@@ -70,22 +76,10 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('js/crud/list.js') }}"></script>
     <script>
-        jQuery(document).ready(function () {
-            $(document).on('change', '#filter_size', function () {
-                let route = '{{ path('config_menu_index') }}';
-                route = route + "?" + 'n=' + $('#filter_size option:selected').val();
-                route = route + "&" + 'b=' + $('#filter_text').val();
-                window.location = route;
-            });
-
-            $(document).on('click', '.btn-send', function () {
-                window.location = '{{ path('config_menu_index') }}';
-            });
-
-            $(document).on('click', '.btn-clean', function () {
-                window.location.href = '{{ path('config_menu_index') }}';
-            });
+        $(document).ready(function () {
+            CRUDList.init('{{ path('config_menu_index') }}');
         });
     </script>
 {% endblock %}

@@ -14,45 +14,59 @@
 
 {% block _main %}
     {{ pagination.pager(paginator, _section) }}
-    <div class="table-responsive">
-        {{ table.tbl_start() }}
-        {{ table.thead_start() }}
-        <tr>
-            {{ table.th('Nombre', true) }}
-            {{ table.th('Alias', true) }}
-            {{ table.th('Menus', true) }}
-            {{ table.th('Activo', true, 'text-center') }}
-            <th></th>
-        </tr>
-        {{ table.thead_end() }}
-        {{ table.tbody_start() }}
-        {% for config in paginator.results %}
+    {% embed 'theme/_table.html.twig' %}
+        {% block table_head %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
             <tr>
-                <td>{{ config.name }}</td>
-                <td>{{ config.alias }}</td>
-                <td>
-                    {% for menu in config.menus %}
-                        <span class="badge badge-secondary">{{ menu }}</span>
-                    {% endfor %}
-                </td>
-                <td class="text-center">{{ config.isActive | yesno_custom | raw }}</td>
-                <td>
-                    {% if access.has('show') %}
-                        {{ action.btn_show_link2_ico(path('config_show', {'uuid': config.uuid})) }}
-                    {% endif %}
-                    {% if access.has('edit', config) %}
-                        {{ action.btn_edit_link2_ico(path('config_edit', {'uuid': config.uuid})) }}
-                    {% endif %}
-                </td>
+                {{ table.th('#', false, 'text-center') }}
+                {{ table.th('Datos', false, 'd-block d-sm-none') }}
+                {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Alias', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Menus', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Ruta', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Activo', true, 'text-center d-none d-sm-table-cell') }}
+                <th></th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">No hay registros</td>
-            </tr>
-        {% endfor %}
-        {{ table.tbody_end() }}
-        {{ table.tbl_end() }}
-    </div>
+        {% endblock %}
+        {% block table_body %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            {% for config in paginator.results %}
+                <tr>
+                    <td class="text-center">{{ loop.index | index(paginator) }}</td>
+                    <td class="d-block d-sm-none font-size-xs">
+                        {{ config.name }}<br>
+                        {{ config.alias }}<br>
+                        {{ config.isActive | yesno_custom | raw }}
+                    </td>
+                    <td class="d-none d-sm-table-cell">{{ config.name}}</td>
+                    <td class="d-none d-sm-table-cell">{{ config.alias }}</td>
+                    <td class="d-none d-sm-table-cell">
+                        {% for menu in config.menus %}
+                            <span class="badge badge-secondary">{{ menu }}</span>
+                        {% endfor %}
+                    </td>
+                    <td class="d-none d-sm-table-cell text-center">{{ config.isActive | yesno_custom | raw }}</td>
+                    <td class="">
+                        <div class="float-end">
+                            {% if access.has('show') %}
+                                {{ action.btn_show_link2_ico(path('config_show', {'uuid': config.uuid})) }}
+                            {% endif %}
+                            {% if access.has('edit', config) %}
+                                {{ action.btn_edit_link2_ico(path('config_edit', {'uuid': config.uuid})) }}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No hay registros</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 
     {{ pagination.show(paginator, _section) }}
 {% endblock %}

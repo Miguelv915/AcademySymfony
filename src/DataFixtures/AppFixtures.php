@@ -47,6 +47,7 @@ class AppFixtures extends Fixture
         $config->setOwner($user);
         $data = [
             'config_index' => 'Configuración',
+            'config_menu_index' => 'Config. Menus',
             'menu_index' => 'Menus',
             'usuario_index' => 'Usuarios',
             'usuario_rol_index' => 'Usuario Roles',
