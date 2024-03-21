@@ -23,7 +23,7 @@ let CRUDList = function () {
         });
 
         document.addEventListener('click', function (event) {
-            if (event.target.id === 'filter_text_icon') {
+            if (event.target.id === 'filter_text_icon' || event.target.parentElement.id === 'filter_text_icon') {
                 window.location = generateRoute(route);
             }else if (event.target.classList.contains('btn-send')) {
                 window.location = route;
