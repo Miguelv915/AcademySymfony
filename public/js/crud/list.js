@@ -16,8 +16,8 @@ let CRUDList = function () {
 
         document.addEventListener('keyup', function (event) {
             let code = event.key;
-            if (code === "Enter") event.preventDefault();
-            if (code === " " || code === "Enter" || code === "," || code === ";") {
+            if (code === "Enter") {
+                event.preventDefault();
                 window.location = generateRoute(route);
             }
         });
