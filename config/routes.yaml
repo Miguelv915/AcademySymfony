@@ -15,3 +15,7 @@ homepage:
     defaults:
         template: default/homepage.html.twig
         _locale: '%locale%'
+
+kernel:
+    resource: ../src/Kernel.php
+    type: annotation
