@@ -43,7 +43,7 @@ class MenuRepository extends BaseRepository
     public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('menu')
-            ->select(['menu', 'parent'])
+            ->select('menu', 'parent')
             ->join('menu.config', 'config')
             ->leftJoin('menu.parent', 'parent');
 
@@ -96,7 +96,7 @@ class MenuRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('menu')
-            ->select(['menu', 'parent'])
+            ->select('menu', 'parent')
             ->join('menu.config', 'config')
             ->leftJoin('menu.parent', 'parent');
     }

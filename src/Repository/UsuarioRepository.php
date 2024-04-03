@@ -45,7 +45,7 @@ class UsuarioRepository extends BaseRepository
     public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('usuario')
-            ->select(['usuario', 'config', 'usuarioRoles'])
+            ->select('usuario', 'config', 'usuarioRoles')
             ->leftJoin('usuario.config', 'config')
             ->leftJoin('usuario.usuarioRoles', 'usuarioRoles');
 
@@ -63,7 +63,7 @@ class UsuarioRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('usuario')
-            ->select(['usuario', 'config', 'usuarioRoles'])
+            ->select('usuario', 'config', 'usuarioRoles')
             ->leftJoin('usuario.config', 'config')
             ->leftJoin('usuario.usuarioRoles', 'usuarioRoles');
     }

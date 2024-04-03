@@ -89,7 +89,7 @@ class ParametroRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('parametro')
-            ->select(['parametro', 'padre'])
+            ->select('parametro', 'padre')
             ->leftJoin('parametro.parent', 'padre');
     }
 }

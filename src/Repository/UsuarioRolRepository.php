@@ -54,7 +54,7 @@ class UsuarioRolRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('usuarioRol')
-            ->select(['usuarioRol', 'usuarios', 'config', 'owner'])
+            ->select('usuarioRol', 'usuarios', 'config', 'owner')
             ->leftJoin('usuarioRol.users', 'usuarios')
             ->leftJoin('usuarioRol.config', 'config')
             ->leftJoin('usuarioRol.owner', 'owner')

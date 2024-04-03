@@ -42,7 +42,7 @@ class ConfigRepository extends BaseRepository
     public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('config')
-            ->select(['config', 'menus'])
+            ->select('config', 'menus')
             ->leftJoin('config.menus', 'menus');
 
         DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['config.nombre']);
