@@ -14,13 +14,15 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            custom_authenticator: Pidia\Apps\Demo\Security\LoginFormAuthenticathorAuthenticator
+            custom_authenticator: Pidia\Apps\Demo\Security\LoginFormAuthenticator
             logout:
-                path: security_logout
+                target: homepage
+                enable_csrf: true
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
                 path: /
+#            entry_point: 'custom_authenticator'
     access_control:
         - { path: '^/(%app_locales%)/login', roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: '^/', roles: IS_AUTHENTICATED_REMEMBERED }
@@ -30,6 +32,10 @@ when@test:
         password_hashers:
             Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
                 algorithm: auto
-                cost: 4 # Lowest possible value for bcrypt
-                time_cost: 3 # Lowest possible value for argon
-                memory_cost: 10 # Lowest possible value for argon
+                cost: 4
+                time_cost: 3
+                memory_cost: 10
+
+        firewalls:
+            main:
+                http_basic: ~

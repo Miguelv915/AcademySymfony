@@ -55,12 +55,12 @@ class ConfigRepository extends BaseRepository
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
 
         $subQuery = $queryBuilder
-            ->select('xmenu.id')
-            ->from(Menu::class, 'xmenu')
-            ->join('xmenu.config', 'xconfig')
-            ->where('xmenu.isActive = true')
-            ->andWhere('xconfig.id = :config_id')
-            ->andWhere('xmenu.route = menus.route');
+            ->select('subMenu.id')
+            ->from(Menu::class, 'subMenu')
+            ->join('subMenu.config', 'subConfig')
+            ->where('subMenu.isActive = true')
+            ->andWhere('subConfig.id = :config_id')
+            ->andWhere('subMenu.route = menus.route');
 
         return $this->createQueryBuilder('config')
             ->select('menus.name as name')

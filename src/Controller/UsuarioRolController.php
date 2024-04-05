@@ -10,7 +10,6 @@ namespace Pidia\Apps\Demo\Controller;
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
-use Doctrine\ORM\EntityManagerInterface;
 use Pidia\Apps\Demo\Cache\MenuCache;
 use Pidia\Apps\Demo\Entity\UsuarioRol;
 use Pidia\Apps\Demo\Form\UsuarioRolType;
@@ -54,7 +53,7 @@ class UsuarioRolController extends WebAuthController
         /** @var UsuarioRol[] $roles */
         $roles = $manager->dataExport(ParamFetcher::fromRequestQuery($request));
         $items = [];
-        foreach ($roles as &$rol) {
+        foreach ($roles as $rol) {
             $item = [];
             $item[] = $rol->getName();
             $item[] = $rol->getRol();
@@ -104,7 +103,7 @@ class UsuarioRolController extends WebAuthController
     }
 
     #[Route(path: '/{uuid}/edit', name: 'usuario_rol_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, UsuarioRol $rol, UsuarioRolManager $manager, MenuCache $menuCache, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, UsuarioRol $rol, UsuarioRolManager $manager, MenuCache $menuCache): Response
     {
         $this->denyAccess([Permission::EDIT], $rol);
 

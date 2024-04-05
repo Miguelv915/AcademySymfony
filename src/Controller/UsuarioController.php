@@ -13,6 +13,7 @@ use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Pidia\Apps\Demo\Entity\Usuario;
 use Pidia\Apps\Demo\Form\UsuarioType;
 use Pidia\Apps\Demo\Manager\UsuarioManager;
@@ -21,6 +22,7 @@ use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 
 #[Route(path: '/admin/usuario')]
 final class UsuarioController extends WebAuthController
@@ -28,7 +30,7 @@ final class UsuarioController extends WebAuthController
     public const BASE_ROUTE = 'usuario_index';
 
     #[Route(path: '/', name: 'usuario_index', defaults: ['page' => '1'], methods: ['GET'])]
-    #[Route(path: '/page/{page<[1-9]\d*>}', name: 'usuario_index_paginated', methods: ['GET'])]
+    #[Route(path: '/page/{page}', name: 'usuario_index_paginated', requirements: ['page' => Requirement::POSITIVE_INT], methods: ['GET'])]
     public function index(Request $request, int $page, UsuarioManager $manager): Response
     {
         $this->denyAccess([Permission::LIST]);
@@ -56,7 +58,7 @@ final class UsuarioController extends WebAuthController
         /** @var Usuario[] $usuarios */
         $usuarios = $manager->dataExport(ParamFetcher::fromRequestQuery($request));
         $items = [];
-        foreach ($usuarios as &$usuario) {
+        foreach ($usuarios as $usuario) {
             $item = [];
             $item[] = $usuario->getUsername();
             $item[] = $usuario->getFullName();
@@ -89,7 +91,7 @@ final class UsuarioController extends WebAuthController
                 return $this->redirectToRoute('usuario_index');
             } catch (DuplicateKeyException) {
                 $this->addFlash('danger', 'Existe un email o usuario repetido');
-            } catch (\Exception) {
+            } catch (Exception) {
                 $this->addFlash('danger', 'Se ha producido un error');
             }
         }
@@ -100,7 +102,7 @@ final class UsuarioController extends WebAuthController
         ]);
     }
 
-    #[Route(path: '/{uuid}', name: 'usuario_show', methods: 'GET')]
+    #[Route(path: '/{uuid}', name: 'usuario_show', requirements: ['uuid' => Requirement::ULID], methods: 'GET')]
     public function show(Usuario $usuario): Response
     {
         $this->denyAccess([Permission::SHOW], $usuario);
@@ -108,7 +110,7 @@ final class UsuarioController extends WebAuthController
         return $this->render('usuario/show.html.twig', ['usuario' => $usuario]);
     }
 
-    #[Route(path: '/{uuid}/edit', name: 'usuario_edit', methods: 'GET|POST')]
+    #[Route(path: '/{uuid}/edit', name: 'usuario_edit', requirements: ['uuid' => Requirement::ULID], methods: 'GET|POST')]
     public function edit(
         Request $request,
         Usuario $usuario,
@@ -139,7 +141,7 @@ final class UsuarioController extends WebAuthController
         ]);
     }
 
-    #[Route(path: '/{uuid}/state', name: 'usuario_change_state', methods: 'POST')]
+    #[Route(path: '/{uuid}/state', name: 'usuario_change_state', requirements: ['uuid' => Requirement::ULID], methods: 'POST')]
     public function state(Request $request, Usuario $usuario, UsuarioManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $usuario);
@@ -156,7 +158,7 @@ final class UsuarioController extends WebAuthController
         return $this->redirectToRoute('usuario_index');
     }
 
-    #[Route(path: '/{uuid}/delete', name: 'usuario_delete', methods: ['POST'])]
+    #[Route(path: '/{uuid}/delete', name: 'usuario_delete', requirements: ['uuid' => Requirement::ULID], methods: ['POST'])]
     public function deleteForever(Request $request, Usuario $usuario, UsuarioManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $usuario);
@@ -171,7 +173,7 @@ final class UsuarioController extends WebAuthController
         return $this->redirectToRoute('usuario_index');
     }
 
-    #[Route(path: '/{uuid}/profile', name: 'usuario_profile', methods: 'GET')]
+    #[Route(path: '/{uuid}/profile', name: 'usuario_profile', requirements: ['uuid' => Requirement::ULID], methods: 'GET')]
     public function profile(Usuario $usuario): Response
     {
         $this->denyAccess([Permission::SHOW], $usuario);
