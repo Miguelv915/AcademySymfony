@@ -95,8 +95,6 @@
 {% block javascripts %}
     <script src="{{ asset('js/crud/list.js') }}"></script>
     <script>
-        $(document).ready(function () {
-            CRUDList.init('{{ path('usuario_index') }}');
-        });
+        CRUDList.init('{{ path('usuario_index') }}');
     </script>
 {% endblock %}
