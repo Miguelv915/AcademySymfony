@@ -1,4 +1,4 @@
-let Flatpickr = function () {
+export let Flatpickr = function () {
     let Spanish = {
         weekdays: {
             shorthand: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
@@ -67,6 +67,8 @@ let Flatpickr = function () {
     });
 }
 
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', () => {
     Flatpickr();
 });
+
+global.Flatpickr = Flatpickr;

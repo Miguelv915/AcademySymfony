@@ -83,10 +83,10 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/crud/list.js') }}"></script>
+    {{ encore_entry_script_tags('crud-list') }}
     <script>
-        $(document).ready(function () {
+        document.addEventListener('DOMContentLoaded', () => {
             CRUDList.init('{{ path('parametro_index') }}');
-        });
+        })
     </script>
 {% endblock %}

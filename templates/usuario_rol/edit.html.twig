@@ -22,8 +22,7 @@
     {% include 'crud/_edit_links.html.twig' with {'route_base':'usuario_rol','entity': usuario_rol} %}
 {% endblock %}
 
-
 {% block javascripts %}
-    <script src="{{ asset('js/select2.js') }}"></script>
-    <script src="{{ asset('js/collection.js') }}" type="text/javascript"></script>
+    {{ encore_entry_script_tags('select2') }}
+    {{ encore_entry_script_tags('collection') }}
 {% endblock %}

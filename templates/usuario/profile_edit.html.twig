@@ -17,7 +17,7 @@
                         {% if usuario.data and usuario.data.foto %}
                             <img class="img-avatar img-avatar96 img-avatar-thumb" src="{{ asset(_media_directory ~ usuario.data.foto.path) | imagine_filter('small') }}" alt="">
                         {% else %}
-                            <img class="img-avatar img-avatar96 img-avatar-thumb" src="{{ asset('img/avatar.png') }}" alt="">
+                            <img class="img-avatar img-avatar96 img-avatar-thumb" src="{{ asset('build/images/avatar.png') }}" alt="">
                         {% endif %}
                     </a>
                 </div>
@@ -145,10 +145,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/select2.js') }}"></script>
-    <script>
-        jQuery(document).ready(function() {
-            Select2();
-        });
-    </script>
+    {{ encore_entry_script_tags('select2') }}
 {% endblock %}

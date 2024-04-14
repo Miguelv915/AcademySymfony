@@ -14,4 +14,5 @@ return [
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
     CarlosChininin\App\Infrastructure\Symfony\Bundle\AppBundle::class => ['all' => true],
     CarlosChininin\AttachFile\AttachFileBundle::class => ['all' => true],
+    Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
 ];

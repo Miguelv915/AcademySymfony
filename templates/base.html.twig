@@ -26,12 +26,13 @@
     <!--end::Fonts-->
     <!--begin::Vendor Stylesheets(used for this page only)-->
     {% block stylesheets %}{% endblock %}
+            {{ encore_entry_link_tags('app') }}
     <!--end::Vendor Stylesheets-->
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
     <link href="{{ asset(_theme ~ 'plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset(_theme ~ 'css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
+{#    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />#}
     <script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 </head>
 <!--end::Head-->
@@ -389,8 +390,6 @@
         <!--end::Page-->
     </div>
     <!--end::Root-->
-    <!--begin::Drawers-->
-    <!--end::Drawers-->
     <!--end::Main-->
 
     <!--begin::Scrolltop-->
@@ -401,33 +400,21 @@
         </i>
     </div>
     <!--end::Scrolltop-->
-    <!--begin::Modals-->
-
-    <!--end::Modals-->
-    <!--begin::Javascript-->
-    <script>var hostUrl = "assets/";</script>
-    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script>const hostUrl = "assets/";</script>
     <script src="{{ asset(_theme ~ 'plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset(_theme ~ 'js/scripts.bundle.js') }}"></script>
-    <!--end::Global Javascript Bundle-->
-    <!--begin::Vendors Javascript(used for this page only)-->
+
+    {{ encore_entry_script_tags('app') }}
     {% block javascripts %}
     {% endblock %}
-    <!--end::Vendors Javascript-->
-    <!--begin::Custom Javascript(used for this page only)-->
-    <script src="{{ asset(_theme ~ 'js/widgets.bundle.js') }}"></script>
-    <script src="{{ asset(_theme ~ 'js/custom/widgets.js') }}"></script>
-    <script src="{{ asset('js/notify.js') }}" type="text/javascript"></script>
-    <!--end::Custom Javascript-->
-    <!--end::Javascript-->
     <script>
-        $(document).ready(function () {
+        document.addEventListener('DOMContentLoaded', function () {
             {%- for label, messages in app.flashes -%}
-            {%- for message in messages -%}
-            Notify.{{ label }}("{{ message | filter_text }}");
+                {%- for message in messages -%}
+                    Notify.{{ label }}("{{ message | filter_text }}");
+                {%- endfor -%}
             {%- endfor -%}
-            {%- endfor -%}
-        });
+        })
     </script>
     </body>
     <!--end::Body-->
