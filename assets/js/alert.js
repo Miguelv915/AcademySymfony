@@ -1,10 +1,7 @@
-//== Class definition
-
-let Alert = function () {
+export let Alert = function () {
 
     let e = Swal.mixin({
         buttonsStyling: false,
-        target: "#page-container",
         confirmButtonText: "Aceptar",
         customClass: {
             confirmButton: "btn btn-success m-1",
@@ -33,3 +30,5 @@ let Alert = function () {
         },
     };
 }();
+
+global.Alert = Alert;

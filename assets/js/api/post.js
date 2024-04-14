@@ -1,4 +1,4 @@
-async function postData(url = "", data = {}) {
+export default async function postData(url = "", data = {}) {
     const response = await fetch(url, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         // mode: "cors", // no-cors, *cors, same-origin
@@ -14,7 +14,9 @@ async function postData(url = "", data = {}) {
     });
 
     return response.json(); // parses JSON response into native JavaScript objects
-}
+};
+
+global.postData = postData;
 
 // postData(url, data)
 //     .then(result => {

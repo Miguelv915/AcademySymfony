@@ -1,4 +1,3 @@
-/** CRUD LIST JS */
 const filterText = document.getElementById("filter_text");
 const filterSize = document.getElementById("filter_size");
 
@@ -46,3 +45,5 @@ let CRUDList = function () {
         },
     };
 }();
+
+global.CRUDList = CRUDList;

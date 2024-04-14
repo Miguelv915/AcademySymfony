@@ -1,4 +1,4 @@
-let Select2 = function () {
+export let Select2 = function () {
     $('.js-select2:not(.js-select2-enabled)').each((index, element) => {
         let el = $(element);
 
@@ -9,8 +9,10 @@ let Select2 = function () {
             width: '100%'
         });
     });
-}
+};
 
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', () => {
     Select2();
-});
+})
+
+global.Select2 = Select2;

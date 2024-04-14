@@ -1,11 +1,9 @@
-//== Class definition
-let Notify = function () {
+export let Notify = function () {
     toastr.options = {
         "closeButton": true,
         "debug": false,
         "newestOnTop": false,
         "progressBar": true,
-        // "positionClass": "toastr-top-right",
         "preventDuplicates": true,
         "onclick": null,
         "showDuration": "300",
@@ -18,6 +16,7 @@ let Notify = function () {
         "hideMethod": "fadeOut",
         'body-output-type': 'trustedHtml'
     };
+
     return {
         info: function(message, title = null) {
             toastr.options.timeOut = 5000;

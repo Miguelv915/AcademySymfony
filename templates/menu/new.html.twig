@@ -25,10 +25,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/select2.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            Select2();
-        });
-    </script>
+    {{ encore_entry_script_tags('select2') }}
 {% endblock %}
