@@ -15,4 +15,5 @@ return [
     CarlosChininin\App\Infrastructure\Symfony\Bundle\AppBundle::class => ['all' => true],
     CarlosChininin\AttachFile\AttachFileBundle::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
+    Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
 ];
