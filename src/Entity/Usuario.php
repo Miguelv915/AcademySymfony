@@ -241,6 +241,7 @@ class Usuario extends AuthUser
 
     public function setPhoto(?AttachFile $photo): void
     {
+        $photo?->setFolder('/usuario');
         $this->photo = $photo;
     }
 }
