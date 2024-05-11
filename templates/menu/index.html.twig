@@ -12,9 +12,9 @@
 
 {% block _main %}
     {{ pagination.pager(paginator, _section) }}
-    {% embed 'theme/_table.html.twig' %}
+    {% embed '@App/theme1/element/_table.html.twig' %}
         {% block table_head %}
-            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
             <tr>
                 {{ table.th('#') }}
@@ -30,7 +30,7 @@
             </tr>
         {% endblock %}
         {% block table_body %}
-            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
 
             {% for menu in paginator.results %}

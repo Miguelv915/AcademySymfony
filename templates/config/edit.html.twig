@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
-{% import 'theme/action.html.twig' as action %}
+{% import '@App/theme1/action.html.twig' as action %}
 
 {% set _title = 'Configuración' %}
 {% set _main_title = 'Editar' %}
@@ -13,7 +13,7 @@
 {% form_theme form _self %}
 
 {% block _config_menus_entry_widget -%}
-    {% import 'theme/action.html.twig' as actions %}
+    {% import '@App/theme1/action.html.twig' as actions %}
     {{ actions.frm_field_two_with_label(form.name,form.route, 'mb-0','form-control-sm') }}
 {%- endblock %}
 

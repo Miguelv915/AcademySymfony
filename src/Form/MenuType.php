@@ -9,6 +9,7 @@ namespace Pidia\Apps\Demo\Form;
 
 use Pidia\Apps\Demo\Entity\Menu;
 use Pidia\Apps\Demo\Repository\ConfigRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -27,11 +28,16 @@ class MenuType extends AbstractType
     {
         $menuActual = $builder->getData();
         $builder
-            ->add('parent')
+            ->add('parent', EntityType::class, [
+                'required' => false,
+                'class' => Menu::class,
+                'placeholder' => 'Seleccione ...',
+            ])
             ->add('name')
             ->add('route', ChoiceType::class, [
                 'choices' => $this->items($menuActual),
                 'required' => false,
+                'placeholder' => 'Seleccione ...',
             ])
             ->add('icon')
             ->add('ranking')

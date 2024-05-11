@@ -1,10 +1,10 @@
-{% import 'theme/form.html.twig' as frm %}
+{% import '@App/theme1/form.html.twig' as frm %}
 
-{{ form_start(form) }}
+{{ frm.start(form) }}
     {{ frm.column2(
             frm.row(form.alias),
             frm.row(form.name)
     ) }}
     {{ frm.column(form.menus, 2) }}
     {{ frm.button(button_label|default('Guardar')) }}
-{{ form_end(form) }}
+{{ frm.end(form) }}

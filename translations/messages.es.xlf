@@ -246,6 +246,66 @@
                 <source>DELETE_ALL</source>
                 <target>ELIMINAR TODO</target>
             </trans-unit>
+            <trans-unit id="Parent">
+                <source>Parent</source>
+                <target>Padre</target>
+            </trans-unit>
+            <trans-unit id="Name">
+                <source>Name</source>
+                <target>Nombre</target>
+            </trans-unit>
+            <trans-unit id="Route">
+                <source>Route</source>
+                <target>Ruta</target>
+            </trans-unit>
+            <trans-unit id="Ranking">
+                <source>Ranking</source>
+                <target>Orden</target>
+            </trans-unit>
+            <trans-unit id="Icon">
+                <source>Icon</source>
+                <target>Icono</target>
+            </trans-unit>
+            <trans-unit id="Badge">
+                <source>Badge</source>
+                <target>Insignia</target>
+            </trans-unit>
+            <trans-unit id="Alias">
+                <source>Alias</source>
+                <target>Alias</target>
+            </trans-unit>
+            <trans-unit id="Value">
+                <source>Value</source>
+                <target>Valor</target>
+            </trans-unit>
+            <trans-unit id="Fullname">
+                <source>Full name</source>
+                <target>Nombre completo</target>
+            </trans-unit>
+            <trans-unit id="Username">
+                <source>Username</source>
+                <target>Usuario</target>
+            </trans-unit>
+            <trans-unit id="Email">
+                <source>Email</source>
+                <target>Correo Electrónico</target>
+            </trans-unit>
+            <trans-unit id="Photo">
+                <source>Photo</source>
+                <target>Foto</target>
+            </trans-unit>
+            <trans-unit id="Config">
+                <source>Config</source>
+                <target>Configuración</target>
+            </trans-unit>
+            <trans-unit id="Password">
+                <source>Password</source>
+                <target>Contraseña</target>
+            </trans-unit>
+            <trans-unit id="RepeatPassword">
+                <source>Repeat Password</source>
+                <target>Repetir contraseña</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

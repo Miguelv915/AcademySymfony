@@ -2,7 +2,7 @@
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 {% import '@App/theme1/pagination.html.twig' as pagination %}
 {% import '@App/theme1/table.html.twig' as table %}
-{% import 'theme/action.html.twig' as action %}
+{% import '@App/theme1/action.html.twig' as action %}
 
 {% set _title = 'Configuración' %}
 {% set _main_title = 'Listado' %}
@@ -14,9 +14,9 @@
 
 {% block _main %}
     {{ pagination.pager(paginator, _section) }}
-    {% embed 'theme/_table.html.twig' %}
+    {% embed '@App/theme1/element/_table.html.twig' %}
         {% block table_head %}
-            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
             <tr>
                 {{ table.th('#', false, 'text-center') }}
@@ -30,7 +30,7 @@
             </tr>
         {% endblock %}
         {% block table_body %}
-            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
 
             {% for config in paginator.results %}

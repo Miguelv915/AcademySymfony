@@ -2,7 +2,7 @@
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 {% import '@App/theme1/pagination.html.twig' as pagination %}
 {% import '@App/theme1/table.html.twig' as table %}
-{% import 'theme/action.html.twig' as action %}
+{% import '@App/theme1/action.html.twig' as action %}
 
 {% set _title = 'Usuario' %}
 {% set _main_title = 'Listado' %}
@@ -14,14 +14,15 @@
 
 {% block _main %}
     {{ pagination.pager(paginator, _section) }}
-    {% embed 'theme/_table.html.twig' %}
+    {% embed '@App/theme1/element/_table.html.twig' %}
         {% block table_head %}
-            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
 
             <tr>
                 {{ table.th('#', false, 'text-center') }}
                 {{ table.th('Datos', false, 'd-block d-sm-none') }}
+                {{ table.th('Foto', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Usuario', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Nombres', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Correo', true, 'd-none d-sm-table-cell') }}
@@ -32,7 +33,7 @@
             </tr>
         {% endblock %}
         {% block table_body %}
-            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
 
             {% for usuario in paginator.results %}
@@ -48,6 +49,15 @@
                             {% endfor %} <br>
                             {{ table.tbl_tr_th_td('Activo', usuario.isActive  | yesno_custom) }}
                         </table>
+                    </td>
+                    <td class="d-none d-sm-table-cell">
+                        <div class="symbol symbol-35px">
+                            {% if usuario.photo %}
+                                <img class="rounded-3" src="{{ asset(usuario.photo.filePath) | imagine_filter('mini') }}" alt="Photo" />
+                            {% else %}
+                                <img class="rounded-3" src="{{ asset('build/images/no-image.png') | imagine_filter('mini') }}" alt="" />
+                            {% endif %}
+                        </div>
                     </td>
                     <td class="d-none d-sm-table-cell">{{ usuario.fullName}}</td>
                     <td class="d-none d-sm-table-cell">{{ usuario.username }}</td>
