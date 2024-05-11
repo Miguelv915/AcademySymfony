@@ -5,7 +5,7 @@
 {% set _section = _section | default(app.request.attributes.get('_route')) %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app.request.locale }}">
 <!--begin::Head-->
 <head>
     <base href=""/>
