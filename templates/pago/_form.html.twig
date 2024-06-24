@@ -1,0 +1,53 @@
+{% import '@App/theme1/form.html.twig' as frm %}
+
+{{ frm.start(form) }}
+    {{ frm.columnX(
+        [
+            frm.row(form.matricula),
+            frm.row(form.monto),
+            frm.row(form.fecha),
+            
+        ],
+        
+    ) }}
+    {{ frm.button(button_label|default('Guardar')) }}
+{{ frm.end(form) }}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('crud-list') }}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            {# CRUDList.init('{{ path('pago_index') }}'); #}
+            let valorDeuda=0;
+    // Inicializar Select2 en el elemento
+            $('#pago_matricula').select2();
+
+            // Añadir el evento change utilizando jQuery y Select2
+            $('#pago_matricula').on('change', async function(e) {
+                let valor = e.target.value
+                console.log('Se seleccionó una nueva opción:', e.target.value);
+
+                    const baseUrl = window.location.origin + `/es/admin/matricula/${valor}/deuda`;
+                    console.log(baseUrl)
+                     {# const page = e.target.textContent;
+                     const newUrl = baseUrl + page;  #}
+                    const response = await fetch(baseUrl);
+                    const data = await response.json(); 
+                    valorDeuda=data;
+                    console.log(data)
+                    let objMonto =$('#pago_monto');
+                    objMonto.val(data);
+                    Notify.success('El alumno tine una deuda ', data);
+
+            });
+            {# let objMonto =$('#pago_monto'); #}
+            $('#pago_monto').on('change', async function(e) {
+                let valor = e.target.value
+                if(valorDeuda<valor){
+                     Notify.danger('no es correto el valor');
+                }
+            })
+        })
+    </script>
+        
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
+
+{% set _title = 'Matricula' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'matricula_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ table.tbl_start() }}
+        {{ table.tbl_tr('Padre',matricula.parent) }}
+        {{ table.tbl_tr('Nombre',matricula.name) }}
+        {{ table.tbl_tr('Alias',matricula.alias) }}
+        {{ table.tbl_tr('Valor',matricula.value) }}
+        {% include 'crud/_show_info.html.twig' with {'entity': matricula} %}
+    {{ table.tbl_end() }}
+
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'matricula','entity': matricula} %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'matricula','entity': matricula} %}
+{% endblock %}

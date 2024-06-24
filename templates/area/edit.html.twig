@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+
+{% set _title = 'Area' %}
+{% set _main_title = 'Editar' %}
+{% set _section =  'area_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Editar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ include('area/_form.html.twig', {'button_label': 'Actualizar'}) }}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_edit_links_ico.html.twig' with {'route_base':'area','entity': area} %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_edit_links.html.twig' with {'route_base':'area','entity': area} %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('select2') }}
+{% endblock %}

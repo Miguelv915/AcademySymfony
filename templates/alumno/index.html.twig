@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/pagination.html.twig' as pagination %}
+
+{% set _title = 'Alumno' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'alumno_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show(_title) }}
+{% endblock %}
+
+{% block _main %}
+    {{ pagination.pager(paginator, _section) }}
+    {% embed '@App/theme1/element/_table.html.twig' %}
+        {% block table_head %}
+            {% import '@App/theme1/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            <tr>
+                {{ table.th('#') }}
+                {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Apellido', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Direccion', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Telefono', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Nombre Padre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Apellido  Padre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Telefono  Padre', true, 'd-none d-sm-table-cell') }}
+                {# {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }} #}
+                {# <th></th> #}
+            </tr>
+        {% endblock %}
+        {% block table_body %}
+            {% import '@App/theme1/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            {% for alumno in paginator.results %}
+                <tr>
+                    <td class="text-center">{{ loop.index | index (paginator)}}</td>
+                    <td class="d-block d-sm-none">
+                        <table class="table gs-0 gy-0">
+                            {{ table.tbl_tr_th_td('Nombre', alumno.apellido) }}
+                            {{ table.tbl_tr_th_td('Activo', alumno.isActive  | yesno_custom) }}
+                        </table>
+                    </td>
+                    <td class="d-none d-sm-table-cell">{{ alumno.nombre }}</td>
+                    <td class="d-none d-sm-table-cell">{{ alumno.apellido }}</td>
+                    <td class="d-none d-sm-table-cell">{{ alumno.direccion }}</td>
+                    <td class="d-none d-sm-table-cell">{{ alumno.telefono }}</td>
+                    <td class="d-none d-sm-table-cell">{{ alumno.nombreApoderado }}</td>
+                    <td class="d-none d-sm-table-cell">{{ alumno.apellidoApoderado }}</td>
+                    <td class="d-none d-sm-table-cell">{{ alumno.telefonoApoderado }}</td>
+                    {# <td class="d-none d-sm-table-cell text-center">{{ alumno.isActive | yesno_custom | raw }}</td> #}
+                    <td class="">
+                        <div class="float-end">
+                            {% if access.has('show', alumno) %}
+                                {{ action.btn_show_link2_ico(path('alumno_show', {'uuid': alumno.uuid})) }}
+                            {% endif %}
+                            {% if access.has('edit', alumno) %}
+                                {{ action.btn_edit_link2_ico(path('alumno_edit', {'uuid': alumno.uuid})) }}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No hay registros</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'alumno'} %}
+{% endblock%}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'alumno'}  %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('crud-list') }}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            CRUDList.init('{{ path('alumno_index') }}');
+        })
+    </script>
+{% endblock %}

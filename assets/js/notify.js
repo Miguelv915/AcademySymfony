@@ -31,7 +31,7 @@ export let Notify = function () {
             toastr.warning(message, title);
         },
         danger: function(message, title = null) {
-            toastr.options.timeOut = 20000;
+            toastr.options.timeOut = 100;
             toastr.error(message, title);
         },
         error: function(message, title = null) {

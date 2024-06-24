@@ -1,0 +1,15 @@
+{% import '@App/theme1/form.html.twig' as frm %}
+
+{{ frm.start(form) }}
+    {{ frm.columnX(
+        [
+            frm.row(form.ciclo),
+            frm.row(form.descuento),
+            frm.row(form.material),
+            frm.row(form.alumno),
+            
+        ],
+        
+    ) }}
+    {{ frm.button(button_label|default('Guardar')) }}
+{{ frm.end(form) }}

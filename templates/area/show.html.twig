@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
+
+{% set _title = 'Area' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'area_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ table.tbl_start() }}
+        {{ table.tbl_tr('Padre',area.parent) }}
+        {{ table.tbl_tr('Nombre',area.name) }}
+        {{ table.tbl_tr('Alias',area.alias) }}
+        {{ table.tbl_tr('Valor',area.value) }}
+        {% include 'crud/_show_info.html.twig' with {'entity': area} %}
+    {{ table.tbl_end() }}
+
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'area','entity': area} %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'area','entity': area} %}
+{% endblock %}
